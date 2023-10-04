@@ -5,7 +5,31 @@
       margin-bottom: 0;
     }
     .card-category{
-      margin-bottom: 5px;
+      display: inline; // Ensure the description text is inline
+
+      &.collapsed {
+        max-height: 3em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;  // Limit to 3 lines (adjust as necessary)
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+      }
+
+      &.expanded {
+        max-height: none;
+      }
+
+      a.toggle-link {
+        margin-left: 8px;  // Space between description and link
+        color: blue;  // Color for the link, adjust as necessary
+        cursor: pointer;
+        text-decoration: underline;  // Underline for link appearance
+
+        &:hover {
+          text-decoration: none;  // Remove underline on hover, adjust as necessary
+        }
+      }
     }
   }
 

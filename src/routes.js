@@ -24,13 +24,19 @@ import TableList from "views/Tables.js";
 import Maps from "views/Map.js";
 import UserPage from "views/User.js";
 import UpgradeToPro from "views/Upgrade.js";
+import store from './store';
+import { Provider } from 'react-redux';
 
 var routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
     icon: "nc-icon nc-bank",
-    component: <Dashboard />,
+    component: (
+      <Provider store={store}>
+        <Dashboard />
+      </Provider>
+    ),
     layout: "/admin",
   },
   {

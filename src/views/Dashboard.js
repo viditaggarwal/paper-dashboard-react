@@ -16,9 +16,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useState, useEffect } from 'react';
 // react plugin used to create charts
-import { Line, Pie } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 // reactstrap components
 import {
   Card,
@@ -31,29 +31,71 @@ import {
 } from "reactstrap";
 // core components
 import {
-  dashboard24HoursPerformanceChart,
-  dashboardEmailStatisticsChart,
   dashboardNASDAQChart,
 } from "variables/charts.js";
+import { useSelector, useDispatch } from 'react-redux';
+import { getStockDetails } from '../actions/stockActions';
 
 function Dashboard() {
+  const dispatch = useDispatch();
+  const { name, ticker, description, fair_value, industry, price, score, logo } = useSelector(state => state.stock);
+  const stockName = useSelector(state => state.stockName);
+  useEffect(() => {
+    if (stockName) {
+      dispatch(getStockDetails(stockName));
+    }
+  }, [dispatch, stockName]);
+
+
+  const [isDescriptionExpanded, setDescriptionExpanded] = useState(false);
+  const toggleDescription = () => {
+    setDescriptionExpanded(prevState => !prevState);
+  };
+
+  const getTruncatedDescription = () => {
+    const windowWidth = window.innerWidth;
+  
+    if (windowWidth >= 1200) {  // Large screens
+      return description.length > 400 ? description.substring(0, 400) + '... ' : description;
+    } else if (windowWidth >= 992) {  // Medium screens
+      return description.length > 350 ? description.substring(0, 350) + '... ' : description;
+    } else {  // Small screens
+      return description.length > 300 ? description.substring(0, 300) + '... ' : description;
+    }
+  };
+  const collapsedDescription = getTruncatedDescription();
+
+
   return (
     <>
       <div className="content">
       <Row>
-          <Col md="8">
+          <Col md="12">
             <Card className="card-chart">
               <CardHeader>
-                <CardTitle tag="h5">Apple Inc.</CardTitle>
-                <CardTitle tag="h8">NASDAQ: AAPL</CardTitle>
-                <p className="card-category">Apple Inc (Apple) designs, manufactures, and 
-                markets smartphones, tablets, personal computers, and wearable devices. The 
-                company offers software applications and related services, accessories, and 
-                third-party digital content. Apple’s product portfolio includes iPhone, iPad, 
-                Mac, iPod, Apple Watch, and Apple TV. </p>
+                <Row>
+                  <Col md="1">
+                    <img src={logo} alt={`${name} Logo`} style={{ width: '100%', maxWidth: '100px' }} />
+                  </Col>
+                  <Col md="11">
+                    {/* Text Column */}
+                    <CardTitle tag="h5">{name}</CardTitle>
+                    <CardTitle tag="h6">NASDAQ: {ticker}</CardTitle>
+                    <CardTitle tag="h6">
+                      <p className="card-category">
+                        {isDescriptionExpanded ? description : collapsedDescription}
+                        <a href="#" onClick={toggleDescription} style={{ marginLeft: '8px' }}>
+                          {isDescriptionExpanded ? 'Show Less' : 'Show More'}
+                        </a>
+                      </p>
+                    </CardTitle>
+                  </Col>
+                </Row>
               </CardHeader>
             </Card>
           </Col>
+        </Row>
+        <Row>
           <Col md="4">
             <Card className="card-stats">
               <CardBody>
@@ -66,7 +108,7 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Price</p>
-                      <CardTitle tag="p">$ 152.80</CardTitle>
+                      <CardTitle tag="p">{price}</CardTitle>
                       <p />
                     </div>
                   </Col>
@@ -80,8 +122,6 @@ function Dashboard() {
               </CardFooter>
             </Card>
           </Col>
-        </Row>
-        <Row>
           <Col lg="4" md="6" sm="6">
             <Card className="card-stats">
               <CardBody>
@@ -94,7 +134,7 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Fair Value</p>
-                      <CardTitle tag="p">$ 189</CardTitle>
+                      <CardTitle tag="p">{fair_value}</CardTitle>
                       <p />
                     </div>
                   </Col>
@@ -120,33 +160,7 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Stocky Score</p>
-                      <CardTitle tag="p">56</CardTitle>
-                      <p />
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="far fa-clock" /> In the last hour
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-          <Col lg="4" md="6" sm="6">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col md="4" xs="5">
-                    <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-favourite-28 text-info" />
-                    </div>
-                  </Col>
-                  <Col md="8" xs="7">
-                    <div className="numbers">
-                      <p className="card-category">Sentiment</p>
-                      <CardTitle tag="p"> Positive</CardTitle>
+                      <CardTitle tag="p">{score}</CardTitle>
                       <p />
                     </div>
                   </Col>

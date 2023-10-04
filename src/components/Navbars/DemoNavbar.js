@@ -16,7 +16,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import {
   Collapse,
@@ -35,6 +35,8 @@ import {
   InputGroupAddon,
   Input,
 } from "reactstrap";
+import { useDispatch } from 'react-redux';
+import { updateStockName } from '../../actions/stockActions';
 
 import routes from "routes.js";
 
@@ -89,6 +91,24 @@ function Header(props) {
       sidebarToggle.current.classList.toggle("toggled");
     }
   }, [location]);
+
+  const dispatch = useDispatch();
+
+  // Create a state variable to hold the search input value
+  const [searchInput, setSearchInput] = useState('');
+
+  // Create a function to handle changes to the search input
+  const handleInputChange = (event) => {
+    setSearchInput(event.target.value);
+  };
+
+  // Create a function to handle form submission
+  const handleFormSubmit = (event) => {
+    event.preventDefault();  // Prevent the default form submission behavior
+    dispatch(updateStockName(searchInput));  // Dispatch the action to update the stock name
+  };
+
+
   return (
     // add or remove classes depending if we are on full-screen-maps page or not
     <Navbar
@@ -125,9 +145,13 @@ function Header(props) {
           <span className="navbar-toggler-bar navbar-kebab" />
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          <form>
+          <form onSubmit={handleFormSubmit}>
             <InputGroup className="no-border">
-              <Input placeholder="Search..." />
+              <Input 
+                placeholder="Search stocks..." 
+                value={searchInput} 
+                onChange={handleInputChange} 
+              />
               <InputGroupAddon addonType="append">
                 <InputGroupText>
                   <i className="nc-icon nc-zoom-split" />

@@ -27,6 +27,8 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
+import store from '../store';
+import { Provider } from 'react-redux';
 
 var ps;
 
@@ -66,7 +68,9 @@ function Dashboard(props) {
         activeColor={activeColor}
       />
       <div className="main-panel" ref={mainPanel}>
-        <DemoNavbar {...props} />
+        <Provider store={store}>
+          <DemoNavbar {...props} />
+        </Provider>
         <Routes>
           {routes.map((prop, key) => {
             return (
