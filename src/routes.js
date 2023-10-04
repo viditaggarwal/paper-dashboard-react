@@ -18,7 +18,7 @@
 */
 import Dashboard from "views/Dashboard.js";
 import Notifications from "views/Notifications.js";
-import Icons from "views/Icons.js";
+import SecSummary from "views/SecSummary.js";
 import Typography from "views/Typography.js";
 import TableList from "views/Tables.js";
 import Maps from "views/Map.js";
@@ -30,7 +30,7 @@ import { Provider } from 'react-redux';
 var routes = [
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Key Details",
     icon: "nc-icon nc-bank",
     component: (
       <Provider store={store}>
@@ -40,17 +40,14 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
+    path: "/secsummary",
     name: "10K AI Summary",
     icon: "nc-icon nc-glasses-2",
-    component: <Icons />,
-    layout: "/admin",
-  },
-  {
-    path: "/maps",
-    name: "Fundamentals",
-    icon: "nc-icon nc-chart-pie-36",
-    component: <Maps />,
+    component: (
+      <Provider store={store}>
+        <SecSummary />
+      </Provider>
+    ),
     layout: "/admin",
   }
 ];

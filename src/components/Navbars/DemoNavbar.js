@@ -37,10 +37,13 @@ import {
 } from "reactstrap";
 import { useDispatch } from 'react-redux';
 import { updateStockName } from '../../actions/stockActions';
-
+import { stocks } from '../../data/stocks';
 import routes from "routes.js";
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';  // Import the CSS
 
 function Header(props) {
+  const [selected, setSelected] = useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
@@ -97,17 +100,20 @@ function Header(props) {
   // Create a state variable to hold the search input value
   const [searchInput, setSearchInput] = useState('');
 
-  // Create a function to handle changes to the search input
-  const handleInputChange = (event) => {
-    setSearchInput(event.target.value);
+  const handleTypeaheadSelection = (selected) => {
+    setSelected(selected);
+    if (selected.length > 0) {
+      dispatch(updateStockName(selected[0].ticker));  // Dispatch the action to update the stock name
+    }
   };
 
-  // Create a function to handle form submission
   const handleFormSubmit = (event) => {
-    event.preventDefault();  // Prevent the default form submission behavior
-    dispatch(updateStockName(searchInput));  // Dispatch the action to update the stock name
+    event.preventDefault();
+    setSelected(selected);
+    if (selected.length > 0) {
+      dispatch(updateStockName(selected[0].ticker));  // Dispatch the action to update the stock name
+    }
   };
-
 
   return (
     // add or remove classes depending if we are on full-screen-maps page or not
@@ -147,10 +153,14 @@ function Header(props) {
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
           <form onSubmit={handleFormSubmit}>
             <InputGroup className="no-border">
-              <Input 
-                placeholder="Search stocks..." 
-                value={searchInput} 
-                onChange={handleInputChange} 
+              <Typeahead
+                id="stock-typeahead"
+                filterBy={['name', 'ticker']}  // Specify the properties to filter by
+                labelKey={(option) => `${option.name} (${option.ticker})`}  // Display both name and ticker in the options
+                onChange={handleTypeaheadSelection}
+                options={stocks}
+                placeholder="Search stocks..."
+                selected={selected}
               />
               <InputGroupAddon addonType="append">
                 <InputGroupText>

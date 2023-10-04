@@ -32,17 +32,20 @@ import {
 // core components
 import {
   dashboardNASDAQChart,
+  prepareChartData
 } from "variables/charts.js";
 import { useSelector, useDispatch } from 'react-redux';
-import { getStockDetails } from '../actions/stockActions';
+import { getStockDetails, getStockFundamentals } from '../actions/stockActions';
 
 function Dashboard() {
   const dispatch = useDispatch();
   const { name, ticker, description, fair_value, industry, price, score, logo } = useSelector(state => state.stock);
+  const { de_ratio, fcf, gross_profit, net_income, revenue, roe } = useSelector(state => state.fundamentals);
   const stockName = useSelector(state => state.stockName);
   useEffect(() => {
     if (stockName) {
       dispatch(getStockDetails(stockName));
+      dispatch(getStockFundamentals(stockName));
     }
   }, [dispatch, stockName]);
 
@@ -65,6 +68,12 @@ function Dashboard() {
   };
   const collapsedDescription = getTruncatedDescription();
 
+  const preparedDERatioData = prepareChartData(de_ratio);
+  const preparedFCFData = prepareChartData(fcf);
+  const preparedGrossProfitData = prepareChartData(gross_profit);
+  const preparedNetIncomeData = prepareChartData(net_income);
+  const preparedRevenueData = prepareChartData(revenue);
+  const preparedROEData = prepareChartData(roe);
 
   return (
     <>
@@ -74,10 +83,10 @@ function Dashboard() {
             <Card className="card-chart">
               <CardHeader>
                 <Row>
-                  <Col md="1">
+                  <Col md="2">
                     <img src={logo} alt={`${name} Logo`} style={{ width: '100%', maxWidth: '100px' }} />
                   </Col>
-                  <Col md="11">
+                  <Col md="10">
                     {/* Text Column */}
                     <CardTitle tag="h5">{name}</CardTitle>
                     <CardTitle tag="h6">NASDAQ: {ticker}</CardTitle>
@@ -176,52 +185,98 @@ function Dashboard() {
           </Col>
         </Row>
         <Row>
-          {/* <Col md="4">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h5">Price vs Fair Value</CardTitle>
-                <p className="card-category">1 Month Performance</p>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={dashboard24HoursPerformanceChart.data}
-                  options={dashboard24HoursPerformanceChart.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="fa fa-history" /> Updated 3 minutes ago
-                </div>
-              </CardFooter>
-            </Card>
-          </Col> */}
-          <Col md="12">
+          <Col md="6">
             <Card className="card-chart">
               <CardHeader>
-                <CardTitle tag="h5">NASDAQ: AAPL</CardTitle>
-                <p className="card-category">Price vs Fair Value</p>
+                <CardTitle tag="h5">ROE</CardTitle>
               </CardHeader>
               <CardBody>
                 <Line
-                  data={dashboardNASDAQChart.data}
-                  options={dashboardNASDAQChart.options}
+                  data={preparedROEData.data}
+                  options={preparedROEData.options}
                   width={400}
                   height={100}
                 />
               </CardBody>
-              <CardFooter>
-                <div className="chart-legend">
-                  <i className="fa fa-circle text-info" /> Price{" "}
-                  <i className="fa fa-circle text-warning" /> Fair Value
-                </div>
-                <hr />
-                <div className="card-stats">
-                  <i className="fa fa-history" /> Updated 2 mins ago
-                </div>
-              </CardFooter>
+            </Card>
+          </Col>
+          <Col md="6">
+            <Card className="card-chart">
+              <CardHeader>
+                <CardTitle tag="h5">DE Ratio</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <Line
+                  data={preparedDERatioData.data}
+                  options={preparedDERatioData.options}
+                  width={400}
+                  height={100}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="6">
+            <Card className="card-chart">
+              <CardHeader>
+                <CardTitle tag="h5">Revenue</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <Line
+                  data={preparedRevenueData.data}
+                  options={preparedRevenueData.options}
+                  width={400}
+                  height={100}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+          <Col md="6">
+            <Card className="card-chart">
+              <CardHeader>
+                <CardTitle tag="h5">Net Income</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <Line
+                  data={preparedNetIncomeData.data}
+                  options={preparedNetIncomeData.options}
+                  width={400}
+                  height={100}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="6">
+            <Card className="card-chart">
+              <CardHeader>
+                <CardTitle tag="h5">Gross Profit</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <Line
+                  data={preparedGrossProfitData.data}
+                  options={preparedGrossProfitData.options}
+                  width={400}
+                  height={100}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+          <Col md="6">
+            <Card className="card-chart">
+              <CardHeader>
+                <CardTitle tag="h5">Free Cash Flow</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <Line
+                  data={preparedFCFData.data}
+                  options={preparedFCFData.options}
+                  width={400}
+                  height={100}
+                />
+              </CardBody>
             </Card>
           </Col>
         </Row>

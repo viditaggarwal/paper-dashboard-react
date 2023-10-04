@@ -198,8 +198,107 @@ const dashboardNASDAQChart = {
   },
 };
 
+function formatNumber(value) {
+  if (value >= 1e9) {
+      return (value / 1e9).toFixed(2);
+  } else if (value >= 1e6) {
+      return (value / 1e6).toFixed(2);
+  } else if (value >= 1e3) {
+      return (value / 1e3).toFixed(2);
+  } else {
+      return value.toString();
+  }
+}
+
+function prepareChartData(ratio) {
+    const dates = Object.keys(ratio);
+    const values = Object.values(ratio).map(value => formatNumber(value));
+    console.log("values", values);
+
+    // Assuming you have an array of colors to differentiate each line on the chart
+    const colors = ["#6bd098", "#3C53F4", "#f17e5d", "#fcc468", "#68d4fc", "#fcc468"];
+
+    return {
+      data: (canvas) => {
+        return {
+          labels: dates,
+          datasets: [
+            {
+              data: values,
+              fill: false,
+              borderColor: colors[0],  // Cycle through colors
+              backgroundColor: "transparent",
+              pointBorderColor: colors[0],  // Cycle through colors
+              pointRadius: 4,
+              pointHoverRadius: 4,
+              pointBorderWidth: 8,
+              tension: 0.4,
+            },
+          ],
+        };
+      },
+      options: {
+        plugins: {
+          legend: { display: false },
+        },
+      }
+    };
+}
+
+// function getUnit(maxValue) {
+//   if (maxValue >= 1e9) {
+//     return 'Billions';
+//   } else if (maxValue >= 1e6) {
+//     return 'Millions';
+//   } else if (maxValue >= 1e3) {
+//     return 'Thousands';
+//   } else {
+//     return '';
+//   }
+// }
+
+// function prepareChartData(ratio) {
+//   const dates = Object.keys(ratio);
+//   const values = Object.values(ratio);
+//   const maxValue = Math.max(...values);
+//   const unit = getUnit(maxValue);
+//   const unitMultiplier = unit === 'Billions' ? 1e9 : unit === 'Millions' ? 1e6 : unit === 'Thousands' ? 1e3 : 1;
+
+//   // Normalize values based on unit
+//   const normalizedValues = values.map(value => value / unitMultiplier);
+
+//   console.log("normalizedValues", normalizedValues);
+
+//   // Assuming you have an array of colors to differentiate each line on the chart
+//   const colors = ["#6bd098", "#3C53F4", "#f17e5d", "#fcc468", "#68d4fc", "#fcc468"];
+
+//   return {
+//     labels: dates,
+//     datasets: [
+//       {
+//         data: normalizedValues,
+//         fill: false,
+//         borderColor: colors[0],  // Use the first color as there's no index provided
+//         backgroundColor: "transparent",
+//         pointBorderColor: colors[0],  // Use the first color as there's no index provided
+//         pointRadius: 4,
+//         pointHoverRadius: 4,
+//         pointBorderWidth: 8,
+//         tension: 0.4,
+//       }
+//     ],
+//     options: {
+//       plugins: {
+//         legend: { display: false },
+//       }
+//     },
+//   };
+// }
+
+
 module.exports = {
   dashboard24HoursPerformanceChart,
   dashboardEmailStatisticsChart,
   dashboardNASDAQChart,
+  prepareChartData
 };

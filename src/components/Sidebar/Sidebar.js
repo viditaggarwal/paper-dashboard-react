@@ -57,7 +57,7 @@ function Sidebar(props) {
           href="https://www.creative-tim.com"
           className="simple-text logo-normal"
         >
-          StockyLab
+          Stocky
         </a>
       </div>
       <div className="sidebar-wrapper" ref={sidebar}>
