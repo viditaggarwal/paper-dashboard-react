@@ -1,5 +1,5 @@
 // src/views/Summary.js
-import React, { useEffect } from 'react';
+import React, {useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getStockDetails, getSecSummary } from '../actions/stockActions';
 import {
@@ -11,6 +11,8 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import Loader from '../components/Loader';
+
 
 const styles = {
   preformattedText: {
@@ -20,19 +22,38 @@ const styles = {
 
 function SecSummary() {
   const dispatch = useDispatch();
-  const { name, ticker, description, fair_value, industry, price, score, logo } = useSelector(state => state.stock);
+  const [loading, setLoading] = useState(true);
+  const { name, ticker, logo } = useSelector(state => state.stock);
   const { business_result, competitive_advantage_result, performance_result, risk_factors_result} = useSelector(state => state.summary);
   const stockName = useSelector(state => state.stockName);
 
   useEffect(() => {
-    if (stockName) {
-      dispatch(getStockDetails(stockName));
-      dispatch(getSecSummary(stockName));
-    }
+    const fetchData = async () => {
+        setLoading(true);
+        if (stockName) {
+            try {
+                await Promise.all([
+                    dispatch(getStockDetails(stockName)),
+                    dispatch(getSecSummary(stockName))
+                ]);
+            } catch (error) {
+                console.error(error);
+                // Handle error appropriately
+            }
+        }
+        setLoading(false);
+    };
+
+    fetchData();
   }, [dispatch, stockName]);
 
+
   return (
-    <div className="content">
+      <div className="content">
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
       <Row>
         <Col md="12">
           <Card className="card-chart">
@@ -108,6 +129,8 @@ function SecSummary() {
             </Card>
         </Col>
       </Row>
+      </>
+      )}
     </div>
   );
 }

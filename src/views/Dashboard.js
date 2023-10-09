@@ -36,17 +36,31 @@ import {
 } from "variables/charts.js";
 import { useSelector, useDispatch } from 'react-redux';
 import { getStockDetails, getStockFundamentals } from '../actions/stockActions';
+import Loader from '../components/Loader';
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const { name, ticker, description, fair_value, industry, price, score, logo } = useSelector(state => state.stock);
   const { de_ratio, fcf, gross_profit, net_income, revenue, roe } = useSelector(state => state.fundamentals);
   const stockName = useSelector(state => state.stockName);
   useEffect(() => {
-    if (stockName) {
-      dispatch(getStockDetails(stockName));
-      dispatch(getStockFundamentals(stockName));
+    async function fetchData() {
+      if (stockName) {
+        setLoading(true);
+        await Promise.all([
+          dispatch(getStockDetails(stockName)),
+          dispatch(getStockFundamentals(stockName))
+        ]);
+        // Adding a delay of 2 seconds before setting loading to false
+        const timer = setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+        // Return cleanup function to clear the timer to prevent memory leaks
+        return () => clearTimeout(timer);
+      }
     }
+    fetchData();
   }, [dispatch, stockName]);
 
 
@@ -75,10 +89,17 @@ function Dashboard() {
   const preparedRevenueData = prepareChartData(revenue);
   const preparedROEData = prepareChartData(roe);
 
+  if (loading) {
+    return <Loader />;  // Render Loader component while data is being loaded
+  }
+
   return (
-    <>
       <div className="content">
-      <Row>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+        <Row>
           <Col md="12">
             <Card className="card-chart">
               <CardHeader>
@@ -280,8 +301,9 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
+        </>
+      )}
       </div>
-    </>
   );
 }
 
