@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.3.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
@@ -32,7 +14,7 @@ import { Provider } from 'react-redux';
 
 var ps;
 
-function Dashboard(props) {
+function AdminLayout(props) {
   const [backgroundColor, setBackgroundColor] = React.useState("black");
   const [activeColor, setActiveColor] = React.useState("info");
   const mainPanel = React.useRef();
@@ -61,15 +43,9 @@ function Dashboard(props) {
   };
   return (
     <div className="wrapper">
-      <Sidebar
-        {...props}
-        routes={routes}
-        bgColor={backgroundColor}
-        activeColor={activeColor}
-      />
       <div className="main-panel" ref={mainPanel}>
         <Provider store={store}>
-          <DemoNavbar {...props} />
+          <DemoNavbar {...props} routes={routes} />
         </Provider>
         <Routes>
           {routes.map((prop, key) => {
@@ -89,4 +65,4 @@ function Dashboard(props) {
   );
 }
 
-export default Dashboard;
+export default AdminLayout;

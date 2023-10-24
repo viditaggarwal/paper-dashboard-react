@@ -246,28 +246,29 @@
         }
     }
 
-    .sidebar,
-    .bootstrap-navbar {
-        position: fixed;
-        display: block;
-        top: 0;
-        height: 100%;
-        width: 260px;
-        right: auto;
-        left: 0;
-        z-index: 1032;
-        visibility: visible;
-        overflow-y: visible;
-        padding: 0;
-        @include transition (0.50s, cubic-bezier(0.685, 0.0473, 0.346, 1));
+    // .sidebar,
+    // .bootstrap-navbar {
+    //     position: fixed;
+    //     display: block;
+    //     top: 0;
+    //     height: 100%;
+    //     width: 260px;
+    //     right: auto;
+    //     left: 0;
+    //     z-index: 1032;
+    //     visibility: visible;
+    //     overflow-y: visible;
+    //     padding: 0;
+    //     @include transition (0.50s, cubic-bezier(0.685, 0.0473, 0.346, 1));
 
-        @include transform-translate-x(-260px);
-    }
+    //     @include transform-translate-x(-260px);
+    // }
 
 
 
     .main-panel{
-      width: 100%;
+      width: 30%;
+      // Default margin
     }
 
     .timeline{
@@ -402,8 +403,9 @@
   }
 
   .main-panel .content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 100px;
+    padding-right: 100px;
+
   }
 
     .footer{

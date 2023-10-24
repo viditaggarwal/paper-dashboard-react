@@ -26,7 +26,9 @@ import {
   CardBody,
   CardFooter,
   CardTitle,
+  CardSubtitle,
   Row,
+  CardText,
   Col,
 } from "reactstrap";
 // core components
@@ -55,7 +57,7 @@ function Dashboard() {
         // Adding a delay of 2 seconds before setting loading to false
         const timer = setTimeout(() => {
           setLoading(false);
-        }, 1000);
+        }, 10);
         // Return cleanup function to clear the timer to prevent memory leaks
         return () => clearTimeout(timer);
       }
@@ -104,14 +106,15 @@ function Dashboard() {
             <Card className="card-chart">
               <CardHeader>
                 <Row>
-                  <Col md="2">
+                  <Col md="2" className="centered-content">
                     <img src={logo} alt={`${name} Logo`} style={{ width: '100%', maxWidth: '100px' }} />
+                    <CardTitle tag="h7">NASDAQ: {ticker}</CardTitle>
                   </Col>
                   <Col md="10">
                     {/* Text Column */}
-                    <CardTitle tag="h5">{name}</CardTitle>
-                    <CardTitle tag="h6">NASDAQ: {ticker}</CardTitle>
-                    <CardTitle tag="h6">
+                    <CardTitle tag="h4">{name}</CardTitle>
+                    <CardTitle tag="h7">{industry}</CardTitle>
+                    <CardTitle tag="p">
                       <p className="card-category">
                         {isDescriptionExpanded ? description : collapsedDescription}
                         <a href="#" onClick={toggleDescription} style={{ marginLeft: '8px' }}>
@@ -138,14 +141,14 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Price</p>
-                      <CardTitle tag="p">{price}</CardTitle>
+                      <CardTitle tag="p">${price}</CardTitle>
                       <p />
                     </div>
                   </Col>
                 </Row>
               </CardBody>
               <CardFooter>
-                <hr />
+                <hr className="card-hr"/>
                 <div className="stats">
                   <i className="far fa-clock" /> Updated 2 mins ago
                 </div>
@@ -164,14 +167,14 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Fair Value</p>
-                      <CardTitle tag="p">{fair_value}</CardTitle>
+                      <CardTitle tag="p">${parseFloat(fair_value['mean']).toFixed(1)}</CardTitle>
                       <p />
                     </div>
                   </Col>
                 </Row>
               </CardBody>
               <CardFooter>
-                <hr />
+                <hr className="card-hr"/>
                 <div className="stats">
                   <i className="far fa-clock" /> Updated 30 mins ago
                 </div>
@@ -197,13 +200,127 @@ function Dashboard() {
                 </Row>
               </CardBody>
               <CardFooter>
-                <hr />
+                <hr className="card-hr"/>
                 <div className="stats">
                   <i className="far fa-clock" /> In the last hour
                 </div>
               </CardFooter>
             </Card>
           </Col>
+        </Row>
+        <Row>
+          <Col md="12">
+            <Row className='padded-row'>
+              <CardTitle tag="h4">Valuation</CardTitle>
+            </Row>
+            <Row>
+              <Col md="4">
+                <Card>
+                  <CardBody>
+                    <Row>
+                      <Col md="8" xs="7">
+                        <CardTitle>DCF</CardTitle>
+                        <CardSubtitle>Discounted Cash Flow</CardSubtitle>
+                      </Col>
+                    </Row>
+                    <hr className="card-hr"/>
+                    <Row>
+                      <CardText className='padded-row valuation-description'>
+                        Valuation based on DCF for <b>{ticker}</b> is <b>$178</b>
+                      </CardText>
+                    </Row>
+                    <Row className="padded-row equidistant-divs">
+                      <div className="numbers">
+                        <CardText className='info-text'>
+                          Discount Rate 10.1%
+                        </CardText>
+                      </div>
+                      <div className="numbers">
+                        <CardText className='info-text'>
+                          Terminal Growth 1%
+                        </CardText>
+                      </div>
+                      <div className="numbers">
+                        <CardText className='info-text'>
+                          FCF $400B
+                        </CardText>
+                      </div>
+                    </Row>
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col md="4">
+                <Card>
+                  <CardBody>
+                    <Row>
+                      <Col md="8" xs="7">
+                        <CardTitle>PE</CardTitle>
+                        <CardSubtitle>Price To Earnings</CardSubtitle>
+                      </Col>
+                    </Row>
+                    <hr className="card-hr"/>
+                    <Row>
+                      <CardText className='padded-row valuation-description'>
+                        Valuation based on DCF for <b>{ticker}</b> is <b>$178</b>
+                      </CardText>
+                    </Row>
+                    <Row className="padded-row equidistant-divs">
+                      <div className="numbers">
+                        <CardText className='info-text'>
+                          Discount Rate 10.1%
+                        </CardText>
+                      </div>
+                      <div className="numbers">
+                        <CardText className='info-text'>
+                          Terminal Growth 1%
+                        </CardText>
+                      </div>
+                      <div className="numbers">
+                        <CardText className='info-text'>
+                          FCF $400B
+                        </CardText>
+                      </div>
+                    </Row>
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col md="4">
+                <Card>
+                  <CardBody>
+                    <Row>
+                      <Col md="8" xs="7">
+                        <CardTitle>PB</CardTitle>
+                        <CardSubtitle>Price to Book</CardSubtitle>
+                      </Col>
+                    </Row>
+                    <hr className="card-hr"/>
+                    <Row>
+                      <CardText className='padded-row valuation-description'>
+                        Valuation based on DCF for <b>{ticker}</b> is <b>$178</b>
+                      </CardText>
+                    </Row>
+                    <Row className="padded-row equidistant-divs">
+                      <div className="numbers">
+                        <CardText className='info-text'>
+                          Discount Rate 10.1%
+                        </CardText>
+                      </div>
+                      <div className="numbers">
+                        <CardText className='info-text'>
+                          Terminal Growth 1%
+                        </CardText>
+                      </div>
+                      <div className="numbers">
+                        <CardText className='info-text'>
+                          FCF $400B
+                        </CardText>
+                      </div>
+                    </Row>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Col>  
         </Row>
         <Row>
           <Col md="6">

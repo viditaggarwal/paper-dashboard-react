@@ -12,7 +12,7 @@
         }
 
         &.dropdown-item{
-            color: $default-color;
+            color: $white-color;
         }
     }
 
@@ -21,15 +21,15 @@
     &.bg-white{
       .input-group .form-control,
       .input-group.no-border .form-control{
-        color: $default-color;
+        color: $white-color;
 
         @include placeholder(){
-          color: $default-color;
+          color: $white-color;
         };
       }
       .input-group-prepend .input-group-text i,
       .input-group-append .input-group-text i{
-        color: $default-color;
+        color: $white-color;
         opacity: .5;
       }
     }
@@ -43,7 +43,7 @@
       .form-group-addon,
       .input-group-prepend .input-group-text,
       .input-group-append .input-group-text{
-        color: $default-color;
+        color: $white-color;
 
         i {
           opacity: 1;
@@ -52,10 +52,10 @@
 
       &.no-border{
         .form-control{
-          color: $default-color;
+          color: $white-color;
 
           @include placeholder(){
-            color: $default-color;
+            color: $white-color;
           };
         }
       }
@@ -174,7 +174,7 @@
         .nav-item .nav-link:not(.btn):hover,
         .nav-item .nav-link:not(.btn):active{
             border-radius: $border-radius-small;
-            color: $default-color;
+            color: $white-color;
         }
     }
 
@@ -222,20 +222,20 @@
       border-bottom: 1px solid #ddd;
 
       a:not(.dropdown-item):not(.btn){
-        color: $default-color;
+        color: $white-color;
 
         &.disabled{
           opacity: .5;
-          color: $default-color;
+          color: $white-color;
          }
        }
 
        .button-bar{
-           background: $default-color;
+           background: $white-color;
        }
 
       .nav-item .nav-link:not(.btn){
-        color: $default-color;
+        color: $white-color;
       }
       .nav-item.active .nav-link:not(.btn),
       .nav-item .nav-link:not(.btn):focus,
@@ -248,16 +248,16 @@
 
     &.bg-white {
         a:not(.dropdown-item):not(.btn){
-            color: $default-color;
+            color: $white-color;
 
             &.disabled{
                 opacity: .5;
-                color: $default-color;
+                color: $white-color;
             }
         }
 
         .button-bar{
-            background: $default-color;
+            background: $white-color;
         }
 
         .nav-item.active .nav-link:not(.btn),
@@ -268,7 +268,7 @@
         }
 
         .logo-container{
-            border: 1px solid $default-color;
+            border: 1px solid $white-color;
         }
     }
 
@@ -282,7 +282,7 @@
 }
 
 .bg-default{
-    background-color: $default-color !important;
+    background-color: $white-color !important;
 }
 
 .bg-primary{

@@ -211,25 +211,37 @@ function formatNumber(value) {
 }
 
 function prepareChartData(ratio) {
-    const dates = Object.keys(ratio);
-    const values = Object.values(ratio).map(value => formatNumber(value));
-    console.log("values", values);
+    let dates = [];
+    let values = [];
+    try {
+      dates = Object.values(ratio['Duration']).slice(0, 10).reverse();
+      values = Object.values(ratio['Value']).slice(0, 10).reverse();
+    } catch (error) {
+      console.error('Error preparing chart data:', error);
+    }
 
     // Assuming you have an array of colors to differentiate each line on the chart
     const colors = ["#6bd098", "#3C53F4", "#f17e5d", "#fcc468", "#68d4fc", "#fcc468"];
-
+    
     return {
       data: (canvas) => {
+        if (!canvas) {
+          return;
+        }
+        const ctx = canvas.getContext("2d")
+        const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+        gradient.addColorStop(0, '#FFFFFF');
+        gradient.addColorStop(1, '#788fff');
         return {
           labels: dates,
           datasets: [
             {
               data: values,
-              fill: false,
-              borderColor: colors[0],  // Cycle through colors
-              backgroundColor: "transparent",
-              pointBorderColor: colors[0],  // Cycle through colors
-              pointRadius: 4,
+              backgroundColor: gradient,
+              borderColor: '#788fff',
+              fill: true,
+              pointBorderColor: '#364dee',
+              pointRadius: 0.5,
               pointHoverRadius: 4,
               pointBorderWidth: 8,
               tension: 0.4,
@@ -238,6 +250,30 @@ function prepareChartData(ratio) {
         };
       },
       options: {
+        scales: {
+          x: {  // x-axis configurations
+            grid: {
+              display: false  // Hide grid lines for x-axis
+            }
+          },
+          y: {
+            grid: {
+              display: true  // Hide grid lines for x-axis
+            },
+            ticks: {
+              callback: function(value, index, values) {
+                if (value >= 1000000000) {
+                  return (value / 1000000000) + 'B';  // convert to billions
+                } else
+                if (value >= 1000000 && value < 1000000000) {
+                  return (value / 1000000) + 'M';  // convert to millions
+                } else {
+                  return value;
+                }
+              }
+            }
+          }
+        },
         plugins: {
           legend: { display: false },
         },

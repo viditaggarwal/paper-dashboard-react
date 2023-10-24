@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.3.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -61,14 +43,14 @@ function Header(props) {
     setDropdownOpen(!dropdownOpen);
   };
   const getBrand = () => {
-    let brandName = "Default Brand";
+    let brandName = "Stocky";
     routes.map((prop, key) => {
       if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
-        brandName = prop.name;
+        brandName = "Stocky";
       }
       return null;
     });
-    return brandName;
+    return "Stocky";
   };
   const openSidebar = () => {
     document.documentElement.classList.toggle("nav-open");
@@ -151,6 +133,15 @@ function Header(props) {
           <span className="navbar-toggler-bar navbar-kebab" />
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
+          <Nav navbar>
+            {props.routes.map((route, index) => (
+              <NavItem key={index}>
+                <Link to={route.path} className="nav-link">
+                  {route.name}
+                </Link>
+              </NavItem>
+            ))}
+          </Nav>
           <form onSubmit={handleFormSubmit}>
             <InputGroup className="no-border">
               <Typeahead
@@ -170,14 +161,6 @@ function Header(props) {
             </InputGroup>
           </form>
           <Nav navbar>
-            <NavItem>
-              <Link to="#pablo" className="nav-link btn-magnify">
-                <i className="nc-icon nc-layout-11" />
-                <p>
-                  <span className="d-lg-none d-md-block">Stats</span>
-                </p>
-              </Link>
-            </NavItem>
             <Dropdown
               nav
               isOpen={dropdownOpen}

@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.3.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import Dashboard from "views/Dashboard.js";
 import Notifications from "views/Notifications.js";
 import SecSummary from "views/SecSummary.js";
@@ -29,15 +11,15 @@ import { Provider } from 'react-redux';
 
 var routes = [
   {
-    path: "/dashboard",
-    name: "Key Details",
+    path: "/",
+    name: "Details",
     icon: "nc-icon nc-bank",
     component: (
       <Provider store={store}>
         <Dashboard />
       </Provider>
     ),
-    layout: "/admin",
+    layout: "/",
   },
   {
     path: "/secsummary",
@@ -48,7 +30,7 @@ var routes = [
         <SecSummary />
       </Provider>
     ),
-    layout: "/admin",
+    layout: "/",
   }
 ];
 export default routes;

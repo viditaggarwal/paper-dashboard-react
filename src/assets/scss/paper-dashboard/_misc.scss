@@ -1,5 +1,5 @@
 body{
-    color: $black-color;
+    color: $white-color;
     font-size: $font-size-base;
     font-family: $sans-serif-family;
     -moz-osx-font-smoothing: grayscale;
@@ -147,4 +147,50 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
       margin-bottom: 20px;
     }
   }
+}
+
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.padded-row {
+  padding: 0 15px;
+}
+
+.info-text {
+  font-size: 10px;
+  border-radius: 5px;
+  padding: 2px 4px;
+  background: linear-gradient(to right, #050505, rgb(0, 0, 0));
+  color: #FFF;
+  text-align: center;
+}
+
+.valuation-description {
+  font-size: 12px;
+  color: $dark-gray;
+  margin-top: 2%;
+  padding-bottom: 10px;
+}
+
+.card-subtitle {
+  font-size: 12px;
+}
+
+.equidistant-divs {
+  display: flex;
+  justify-content: start;
+  margin-bottom: 5%;
+
+  > .numbers {
+    margin-right: 5px;
+  }
+}
+
+.card-hr {
+  margin-top: 5px;  /* Adjust as per your requirement */
+  margin-bottom: 5px;  /* Adjust as per your requirement */
+  background-color: $dark-gray;
 }

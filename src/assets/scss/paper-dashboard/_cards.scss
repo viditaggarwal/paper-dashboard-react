@@ -1,8 +1,8 @@
 .card{
   border-radius: $border-radius-extreme;
   box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
-  background-color: #FFFFFF;
-  color: $card-black-color;
+  background-color: #22243d;
+  color: $white-color;
   margin-bottom: 20px;
   position: relative;
   border: 0 none;
@@ -100,7 +100,7 @@
     label{
         font-size: $font-size-small;
         margin-bottom: 5px;
-        color: $dark-gray;
+        color: $white-color;
     }
 
     .card-footer{
@@ -113,7 +113,7 @@
                 margin-right: 5px;
                 position: relative;
                 top: 0px;
-                color: $default-color;
+                color: $white-color;
             }
         }
 
