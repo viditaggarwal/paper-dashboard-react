@@ -8,7 +8,7 @@ body{
 
 .main{
     position: relative;
-    background: $white-color;
+    background: $dark-background;
 }
 /* Animations */
 .nav-pills .nav-link,
@@ -160,17 +160,17 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .info-text {
-  font-size: 10px;
+  font-size: 14px;
   border-radius: 5px;
-  padding: 2px 4px;
+  padding: 4px 8px;
   background: linear-gradient(to right, #050505, rgb(0, 0, 0));
   color: #FFF;
   text-align: center;
 }
 
 .valuation-description {
-  font-size: 12px;
-  color: $dark-gray;
+  font-size: 14px;
+  color: $white-color;
   margin-top: 2%;
   padding-bottom: 10px;
 }
@@ -182,10 +182,11 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 .equidistant-divs {
   display: flex;
   justify-content: start;
-  margin-bottom: 5%;
+  margin-bottom: 2px;
 
   > .numbers {
     margin-right: 5px;
+    margin-bottom: 5px;
   }
 }
 

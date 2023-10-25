@@ -1,24 +1,14 @@
 const initialState = {
-    de_ratio: [],
-    fcf: [],
-    gross_profit: [],
-    net_income: [],
-    revenue: [],
-    roe: []
+    data: {}
   };
     
   export const stockFundamentalsReducer = (state = initialState, action) => {
     switch (action.type) {
       case 'SET_STOCK_FUNDAMENTALS':
-        const { de_ratio, fcf, gross_profit, net_income, revenue, roe } = action.payload.fundamentals;
+        const data = action.payload.fundamentals;
         return {
           ...state,
-          de_ratio,
-          fcf,
-          gross_profit,
-          net_income,
-          revenue,
-          roe
+          data
         };
       default:
         return state;

@@ -18,7 +18,7 @@
 */
 import React, {useState, useEffect } from 'react';
 // react plugin used to create charts
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 // reactstrap components
 import {
   Card,
@@ -44,7 +44,13 @@ function Dashboard() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const { name, ticker, description, fair_value, industry, price, score, logo } = useSelector(state => state.stock);
-  const { de_ratio, fcf, gross_profit, net_income, revenue, roe } = useSelector(state => state.fundamentals);
+  const graph_data = useSelector(state => state.fundamentals.data);
+  console.log('graph_data:', graph_data);
+  const sections = [
+    { title: 'Income Statement', category: 'income', label_keys: {revenue_growth:'Revenue Growth', eps:'EPS', gross_margin: 'Gross Margin'} },
+    { title: 'Balance Sheet', category: 'balance_sheet', label_keys: {roe:'ROE', debt_to_equity: 'DE Ratio', current_ratio:'Current Ratio'} },
+    { title: 'Cash Flow Statement', category: 'cash_flow', label_keys: {operating_cash_flow:'Operating Cash Flow', fcf:'Free Cash Flow', capex: 'Capex'} },
+  ];
   const stockName = useSelector(state => state.stockName);
   useEffect(() => {
     async function fetchData() {
@@ -54,12 +60,13 @@ function Dashboard() {
           dispatch(getStockDetails(stockName)),
           dispatch(getStockFundamentals(stockName))
         ]);
+        setLoading(false);
         // Adding a delay of 2 seconds before setting loading to false
-        const timer = setTimeout(() => {
-          setLoading(false);
-        }, 10);
-        // Return cleanup function to clear the timer to prevent memory leaks
-        return () => clearTimeout(timer);
+        // const timer = setTimeout(() => {
+        //   setLoading(false);
+        // }, 10);
+        // // Return cleanup function to clear the timer to prevent memory leaks
+        // return () => clearTimeout(timer);
       }
     }
     fetchData();
@@ -84,12 +91,12 @@ function Dashboard() {
   };
   const collapsedDescription = getTruncatedDescription();
 
-  const preparedDERatioData = prepareChartData(de_ratio);
-  const preparedFCFData = prepareChartData(fcf);
-  const preparedGrossProfitData = prepareChartData(gross_profit);
-  const preparedNetIncomeData = prepareChartData(net_income);
-  const preparedRevenueData = prepareChartData(revenue);
-  const preparedROEData = prepareChartData(roe);
+  // const preparedDERatioData = prepareChartData(de_ratio);
+  // const preparedFCFData = prepareChartData(fcf);
+  // const preparedGrossProfitData = prepareChartData(gross_profit);
+  // const preparedNetIncomeData = prepareChartData(net_income);
+  // const preparedRevenueData = prepareChartData(revenue);
+  // const preparedROEData = prepareChartData(roe);
 
   if (loading) {
     return <Loader />;  // Render Loader component while data is being loaded
@@ -108,19 +115,17 @@ function Dashboard() {
                 <Row>
                   <Col md="2" className="centered-content">
                     <img src={logo} alt={`${name} Logo`} style={{ width: '100%', maxWidth: '100px' }} />
-                    <CardTitle tag="h7">NASDAQ: {ticker}</CardTitle>
+                    <CardTitle tag="p">NASDAQ: {ticker}</CardTitle>
                   </Col>
                   <Col md="10">
-                    {/* Text Column */}
                     <CardTitle tag="h4">{name}</CardTitle>
-                    <CardTitle tag="h7">{industry}</CardTitle>
-                    <CardTitle tag="p">
-                      <p className="card-category">
+                    <CardTitle tag="p">{industry}</CardTitle>
+                    <CardTitle tag="p" className='card-category'>
                         {isDescriptionExpanded ? description : collapsedDescription}
                         <a href="#" onClick={toggleDescription} style={{ marginLeft: '8px' }}>
                           {isDescriptionExpanded ? 'Show Less' : 'Show More'}
                         </a>
-                      </p>
+                      {/* </p> */}
                     </CardTitle>
                   </Col>
                 </Row>
@@ -208,6 +213,7 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
+        <hr className="card-hr"/>
         <Row>
           <Col md="12">
             <Row className='padded-row'>
@@ -322,102 +328,40 @@ function Dashboard() {
             </Row>
           </Col>  
         </Row>
-        <Row>
-          <Col md="6">
-            <Card className="card-chart">
-              <CardHeader>
-                <CardTitle tag="h5">ROE</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={preparedROEData.data}
-                  options={preparedROEData.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card className="card-chart">
-              <CardHeader>
-                <CardTitle tag="h5">DE Ratio</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={preparedDERatioData.data}
-                  options={preparedDERatioData.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="6">
-            <Card className="card-chart">
-              <CardHeader>
-                <CardTitle tag="h5">Revenue</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={preparedRevenueData.data}
-                  options={preparedRevenueData.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card className="card-chart">
-              <CardHeader>
-                <CardTitle tag="h5">Net Income</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={preparedNetIncomeData.data}
-                  options={preparedNetIncomeData.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="6">
-            <Card className="card-chart">
-              <CardHeader>
-                <CardTitle tag="h5">Gross Profit</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={preparedGrossProfitData.data}
-                  options={preparedGrossProfitData.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card className="card-chart">
-              <CardHeader>
-                <CardTitle tag="h5">Free Cash Flow</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={preparedFCFData.data}
-                  options={preparedFCFData.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <hr className="card-hr"/>
+        <div>
+          {sections.map((section, index) => (
+            <Row key={index}>
+              <Col md="12">
+                <Row className='padded-row'>
+                  <CardTitle tag="h4">{section.title}</CardTitle>
+                </Row>
+                <Row>
+                  {Object.keys(section.label_keys).map((key, i) => {
+                    const preparedData = prepareChartData(graph_data[section.category][key]);
+                    return (
+                      <Col md="4" key={i}>
+                        <Card className="card-chart">
+                          <CardHeader>
+                            <CardTitle tag="h5">{section.label_keys[key]}</CardTitle>
+                          </CardHeader>
+                          <CardBody>
+                            <Bar
+                              data={preparedData.data}
+                              options={preparedData.options}
+                              width={400}
+                              height={200}
+                            />
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    );
+                  })}
+                </Row>
+              </Col>
+            </Row>
+          ))}
+        </div>
         </>
       )}
       </div>

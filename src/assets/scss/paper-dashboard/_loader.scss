@@ -4,7 +4,7 @@
     align-items: center;
     height: 100vh;  /* takes the full height of the viewport */
     width: 100%;
-    background-color: #f9f9f9; /* optional: gives a background color */
+    background-color: $dark-background; /* optional: gives a background color */
   }
   
   .spinner {

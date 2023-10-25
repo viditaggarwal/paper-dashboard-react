@@ -210,43 +210,50 @@ function formatNumber(value) {
   }
 }
 
+function getGradientColor(ctx, value) {
+  const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+  const endColor = value >= 0 ? '#6bd098' : '#f17e5d';  // modern green for positive, modern red for negative
+  gradient.addColorStop(0, '#FFFFFF');
+  gradient.addColorStop(1, endColor);
+  return gradient;
+}
+
 function prepareChartData(ratio) {
     let dates = [];
     let values = [];
     try {
-      dates = Object.values(ratio['Duration']).slice(0, 10).reverse();
-      values = Object.values(ratio['Value']).slice(0, 10).reverse();
+      if (ratio['Duration'] !== undefined && ratio['Value'] !== undefined) {
+        dates = Object.values(ratio['Duration']).slice(0, 10).reverse().map(dateStr => dateStr.split('-')[0]);
+        values = Object.values(ratio['Value']).slice(0, 10).reverse();
+      }
     } catch (error) {
       console.error('Error preparing chart data:', error);
     }
 
-    // Assuming you have an array of colors to differentiate each line on the chart
-    const colors = ["#6bd098", "#3C53F4", "#f17e5d", "#fcc468", "#68d4fc", "#fcc468"];
     
     return {
       data: (canvas) => {
         if (!canvas) {
           return;
         }
-        const ctx = canvas.getContext("2d")
-        const gradient = ctx.createLinearGradient(0, 0, 0, 150);
-        gradient.addColorStop(0, '#FFFFFF');
-        gradient.addColorStop(1, '#788fff');
+        const ctx = canvas.getContext("2d");
+      
+        const backgroundColors = values.map(value => getGradientColor(ctx, value));
+        const borderColors = values.map(value => value >= 0 ? '#6bd098' : '#f17e5d');
+      
         return {
           labels: dates,
-          datasets: [
-            {
-              data: values,
-              backgroundColor: gradient,
-              borderColor: '#788fff',
-              fill: true,
-              pointBorderColor: '#364dee',
-              pointRadius: 0.5,
-              pointHoverRadius: 4,
-              pointBorderWidth: 8,
-              tension: 0.4,
-            },
-          ],
+          datasets: [{
+            data: values,
+            backgroundColor: backgroundColors,
+            borderColor: borderColors,
+            fill: true,
+            pointBorderColor: '#364dee',
+            pointRadius: 0.5,
+            pointHoverRadius: 4,
+            pointBorderWidth: 8,
+            tension: 0.4,
+          }]
         };
       },
       options: {
@@ -254,6 +261,9 @@ function prepareChartData(ratio) {
           x: {  // x-axis configurations
             grid: {
               display: false  // Hide grid lines for x-axis
+            },
+            ticks: {
+              color: 'white',
             }
           },
           y: {
@@ -270,7 +280,8 @@ function prepareChartData(ratio) {
                 } else {
                   return value;
                 }
-              }
+              },
+              color: 'white',
             }
           }
         },

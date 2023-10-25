@@ -49,7 +49,10 @@ $opacity-1:                  rgba(255,255,255, .1) !default;
 $opacity-2:                  rgba(255,255,255, .2) !default;
 
 $transparent-bg:             transparent !default;
-$dark-background:            #07091a !default;
+// $dark-background:            #07091a !default;
+$dark-background:            #151B24 !default;
+
+$lt-dark-background:         #1B222D !default;
 
 $gray-input-bg:              #fffcf5 !default;
 $danger-input-bg:            #FFC0A4 !default;
