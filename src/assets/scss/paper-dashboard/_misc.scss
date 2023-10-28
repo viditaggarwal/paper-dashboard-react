@@ -191,7 +191,41 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .card-hr {
-  margin-top: 5px;  /* Adjust as per your requirement */
-  margin-bottom: 5px;  /* Adjust as per your requirement */
-  background-color: $dark-gray;
+  margin-bottom: 10px;  /* Adjust as per your requirement */
+  height: 1px; // Define the height, for gradient to work well
+  background-image: linear-gradient(to right, $dark-gray, $dark-background);
 }
+
+.card-hr-left-short {
+  width: 50%;
+  height: 1px; // Define the height, for gradient to work well
+  margin-top: 3px;
+  margin-bottom: 10px;
+  margin-left: 0; 
+  margin-right: auto;
+  background-image: linear-gradient(to right, $dark-gray, $dark-background);
+}
+
+.subtitle-h5 {
+  font-size: 16px;
+  color: $white-color;
+  margin-top: 2%;
+  padding-bottom: 5px;
+  font-weight: 400;
+}
+
+.share-buttons-sticky {
+  position: fixed;  /* Change from 'sticky' to 'fixed' */
+  top: 50%;  /* Center vertically */
+  right: 0;  /* Stick to the right side */
+  transform: translateY(-50%);  /* Adjust for exact vertical centering */
+  z-index: 9999;  /* Make sure it stays on top */
+}
+
+.social-share {
+  list-style-type: none;  /* Remove the bullet points */
+  padding: 0;  /* Remove default padding */
+  margin: 0;  /* Remove default margin */
+}
+
+

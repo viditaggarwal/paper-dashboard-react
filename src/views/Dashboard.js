@@ -33,7 +33,6 @@ import {
 } from "reactstrap";
 // core components
 import {
-  dashboardNASDAQChart,
   prepareChartData
 } from "variables/charts.js";
 import { useSelector, useDispatch } from 'react-redux';
@@ -42,10 +41,10 @@ import Loader from '../components/Loader';
 
 function Dashboard() {
   const dispatch = useDispatch();
+  
   const [loading, setLoading] = useState(true);
   const { name, ticker, description, fair_value, industry, price, score, logo } = useSelector(state => state.stock);
-  const graph_data = useSelector(state => state.fundamentals.data);
-  console.log('graph_data:', graph_data);
+  const graph_data = useSelector(state => state.fundamentals && state.fundamentals.data);
   const sections = [
     { title: 'Income Statement', category: 'income', label_keys: {revenue_growth:'Revenue Growth', eps:'EPS', gross_margin: 'Gross Margin'} },
     { title: 'Balance Sheet', category: 'balance_sheet', label_keys: {roe:'ROE', debt_to_equity: 'DE Ratio', current_ratio:'Current Ratio'} },
@@ -61,12 +60,6 @@ function Dashboard() {
           dispatch(getStockFundamentals(stockName))
         ]);
         setLoading(false);
-        // Adding a delay of 2 seconds before setting loading to false
-        // const timer = setTimeout(() => {
-        //   setLoading(false);
-        // }, 10);
-        // // Return cleanup function to clear the timer to prevent memory leaks
-        // return () => clearTimeout(timer);
       }
     }
     fetchData();
@@ -90,13 +83,6 @@ function Dashboard() {
     }
   };
   const collapsedDescription = getTruncatedDescription();
-
-  // const preparedDERatioData = prepareChartData(de_ratio);
-  // const preparedFCFData = prepareChartData(fcf);
-  // const preparedGrossProfitData = prepareChartData(gross_profit);
-  // const preparedNetIncomeData = prepareChartData(net_income);
-  // const preparedRevenueData = prepareChartData(revenue);
-  // const preparedROEData = prepareChartData(roe);
 
   if (loading) {
     return <Loader />;  // Render Loader component while data is being loaded
@@ -213,129 +199,86 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
-        <hr className="card-hr"/>
         <Row>
           <Col md="12">
             <Row className='padded-row'>
               <CardTitle tag="h4">Valuation</CardTitle>
             </Row>
+            <hr className="card-hr"/>
             <Row>
-              <Col md="4">
-                <Card>
-                  <CardBody>
-                    <Row>
-                      <Col md="8" xs="7">
-                        <CardTitle>DCF</CardTitle>
-                        <CardSubtitle>Discounted Cash Flow</CardSubtitle>
-                      </Col>
-                    </Row>
-                    <hr className="card-hr"/>
-                    <Row>
-                      <CardText className='padded-row valuation-description'>
-                        Valuation based on DCF for <b>{ticker}</b> is <b>$178</b>
-                      </CardText>
-                    </Row>
-                    <Row className="padded-row equidistant-divs">
-                      <div className="numbers">
-                        <CardText className='info-text'>
-                          Discount Rate 10.1%
+              {['dcf', 'pe', 'pb', 'ps', 'ev_ebit'].map((method, index) => {
+                if (!fair_value[method]) {
+                  return null; // Skip this iteration if the method is not available
+                }
+                
+                const fairVal = fair_value[method]['Fair Value'];
+                const percentageDifference = ((fairVal - price) / price) * 100;
+                const color = percentageDifference >= 0 ? 'green' : 'red';
+
+                return (
+                  <Col md="4" key={index}>
+                    <Card>
+                      <CardBody>
+                        <Row>
+                          <Col md="8" xs="7">
+                            <CardTitle tag="h5">{method.toUpperCase()}</CardTitle>
+                            <CardSubtitle>
+                              {(() => {
+                                const fullForms = {
+                                  'dcf': 'Discounted Cash Flow',
+                                  'pe': 'Price to Earnings',
+                                  'pb': 'Price to Book',
+                                  'ps': 'Price to Sales',
+                                  'ev_ebit': 'Enterprise Value to EBIT'
+                                };
+                                return fullForms[method] || '';
+                              })()}
+                            </CardSubtitle>
+                          </Col>
+                        </Row>
+                        <hr className="card-hr"/>
+                        <Row>
+                        <CardText className='padded-row valuation-description'>
+                          <b>{ticker}</b> is currently priced at <b>${price.toFixed(2)}</b>. 
+                          Based on the {method.toUpperCase()} method, the stock has a fair value of <b><span style={{"color": color}}>${fairVal.toFixed(2)}</span></b>.
+                          This represents a <span style={{"color": color}}>{percentageDifference.toFixed(2)}% {percentageDifference >= 0 ? 'upside' : 'downside'}</span> potential.
                         </CardText>
-                      </div>
-                      <div className="numbers">
-                        <CardText className='info-text'>
-                          Terminal Growth 1%
-                        </CardText>
-                      </div>
-                      <div className="numbers">
-                        <CardText className='info-text'>
-                          FCF $400B
-                        </CardText>
-                      </div>
-                    </Row>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col md="4">
-                <Card>
-                  <CardBody>
-                    <Row>
-                      <Col md="8" xs="7">
-                        <CardTitle>PE</CardTitle>
-                        <CardSubtitle>Price To Earnings</CardSubtitle>
-                      </Col>
-                    </Row>
-                    <hr className="card-hr"/>
-                    <Row>
-                      <CardText className='padded-row valuation-description'>
-                        Valuation based on DCF for <b>{ticker}</b> is <b>$178</b>
-                      </CardText>
-                    </Row>
-                    <Row className="padded-row equidistant-divs">
-                      <div className="numbers">
-                        <CardText className='info-text'>
-                          Discount Rate 10.1%
-                        </CardText>
-                      </div>
-                      <div className="numbers">
-                        <CardText className='info-text'>
-                          Terminal Growth 1%
-                        </CardText>
-                      </div>
-                      <div className="numbers">
-                        <CardText className='info-text'>
-                          FCF $400B
-                        </CardText>
-                      </div>
-                    </Row>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col md="4">
-                <Card>
-                  <CardBody>
-                    <Row>
-                      <Col md="8" xs="7">
-                        <CardTitle>PB</CardTitle>
-                        <CardSubtitle>Price to Book</CardSubtitle>
-                      </Col>
-                    </Row>
-                    <hr className="card-hr"/>
-                    <Row>
-                      <CardText className='padded-row valuation-description'>
-                        Valuation based on DCF for <b>{ticker}</b> is <b>$178</b>
-                      </CardText>
-                    </Row>
-                    <Row className="padded-row equidistant-divs">
-                      <div className="numbers">
-                        <CardText className='info-text'>
-                          Discount Rate 10.1%
-                        </CardText>
-                      </div>
-                      <div className="numbers">
-                        <CardText className='info-text'>
-                          Terminal Growth 1%
-                        </CardText>
-                      </div>
-                      <div className="numbers">
-                        <CardText className='info-text'>
-                          FCF $400B
-                        </CardText>
-                      </div>
-                    </Row>
-                  </CardBody>
-                </Card>
-              </Col>
+                        </Row>
+                        <Row className="padded-row equidistant-divs">
+                            {Object.keys(fair_value[method]).map((field, fieldIndex) => {
+                              const value = fair_value[method][field];
+                              if (typeof value === 'number' && field !== 'Fair Value') {
+                                return (
+                                  <div className="numbers">
+                                    <CardText className='info-text' key={fieldIndex}>
+                                      {field.replace(/_/g, ' ')}: {value}
+                                    </CardText>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            })}
+                        </Row>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                );
+              })}
             </Row>
           </Col>  
         </Row>
-        <hr className="card-hr"/>
         <div>
+          <Row className='padded-row'>
+            <CardTitle tag="h4">Financials</CardTitle>
+          </Row>
+          <hr className="card-hr"/>
           {sections.map((section, index) => (
             <Row key={index}>
               <Col md="12">
                 <Row className='padded-row'>
-                  <CardTitle tag="h4">{section.title}</CardTitle>
+                  <CardSubtitle className='subtitle-h5'>{section.title}</CardSubtitle>
                 </Row>
+                <hr className="card-hr-left-short"/>
                 <Row>
                   {Object.keys(section.label_keys).map((key, i) => {
                     const preparedData = prepareChartData(graph_data[section.category][key]);

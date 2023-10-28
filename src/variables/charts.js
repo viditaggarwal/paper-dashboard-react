@@ -198,18 +198,6 @@ const dashboardNASDAQChart = {
   },
 };
 
-function formatNumber(value) {
-  if (value >= 1e9) {
-      return (value / 1e9).toFixed(2);
-  } else if (value >= 1e6) {
-      return (value / 1e6).toFixed(2);
-  } else if (value >= 1e3) {
-      return (value / 1e3).toFixed(2);
-  } else {
-      return value.toString();
-  }
-}
-
 function getGradientColor(ctx, value) {
   const gradient = ctx.createLinearGradient(0, 0, 0, 150);
   const endColor = value >= 0 ? '#6bd098' : '#f17e5d';  // modern green for positive, modern red for negative

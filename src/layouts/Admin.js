@@ -5,12 +5,11 @@ import { Route, Routes, useLocation } from "react-router-dom";
 
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Footer from "components/Footer/Footer.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
 import store from '../store';
 import { Provider } from 'react-redux';
+import ShareButtons from "components/Share/ShareButtons.js";
 
 var ps;
 
@@ -47,6 +46,9 @@ function AdminLayout(props) {
         <Provider store={store}>
           <DemoNavbar {...props} routes={routes} />
         </Provider>
+        <div className="share-buttons-sticky">
+          <ShareButtons url="https://trystocky.com" title="🚀 Ready to invest like a Wall Street pro without the Wall Street price? Join the Stocky waitlist and get insider tips straight to your inbox! 💡 #InvestSmart #Stocky" />
+        </div>
         <Routes>
           {routes.map((prop, key) => {
             return (
