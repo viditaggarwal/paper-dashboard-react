@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const HOSTNAME = 'http://127.0.0.1:5000';
+const HOSTNAME = 'http://35.82.209.215';
 
 export const fetchStockDetails = async (ticker) => {
   try {
