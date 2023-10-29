@@ -166,7 +166,7 @@ function Dashboard() {
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Stocky Score</p>
+                      <p className="card-category">Financial Health</p>
                       <CardTitle tag="p">{score}</CardTitle>
                       <p />
                     </div>
@@ -204,7 +204,7 @@ function Dashboard() {
                       <CardBody>
                         <Row>
                           <Col md="8" xs="7">
-                            <CardTitle tag="h5">{method.toUpperCase()}</CardTitle>
+                            <CardTitle tag="h5">{method.toUpperCase()} Valuation</CardTitle>
                             <CardSubtitle>
                               {(() => {
                                 const fullForms = {

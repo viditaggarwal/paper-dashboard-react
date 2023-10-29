@@ -15,12 +15,10 @@ import {
   InputGroup,
   InputGroupText,
   InputGroupAddon,
-  Input,
 } from "reactstrap";
 import { useDispatch } from 'react-redux';
 import { updateStockName } from '../../actions/stockActions';
 import { stocks } from '../../data/stocks';
-import routes from "routes.js";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';  // Import the CSS
 
@@ -43,13 +41,13 @@ function Header(props) {
     setDropdownOpen(!dropdownOpen);
   };
   const getBrand = () => {
-    let brandName = "Stocky";
-    routes.map((prop, key) => {
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
-        brandName = "Stocky";
-      }
-      return null;
-    });
+    // let brandName = "Stocky";
+    // routes.map((prop, key) => {
+    //   if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+    //     brandName = "Stocky";
+    //   }
+    //   return null;
+    // });
     return "Stocky";
   };
   const openSidebar = () => {
@@ -78,9 +76,6 @@ function Header(props) {
   }, [location]);
 
   const dispatch = useDispatch();
-
-  // Create a state variable to hold the search input value
-  const [searchInput, setSearchInput] = useState('');
 
   const handleTypeaheadSelection = (selected) => {
     setSelected(selected);
@@ -133,7 +128,7 @@ function Header(props) {
           <span className="navbar-toggler-bar navbar-kebab" />
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          <Nav navbar>
+          {/* <Nav navbar>
             {props.routes.map((route, index) => (
               <NavItem key={index}>
                 <Link to={route.path} className="nav-link">
@@ -141,7 +136,7 @@ function Header(props) {
                 </Link>
               </NavItem>
             ))}
-          </Nav>
+          </Nav> */}
           <form onSubmit={handleFormSubmit}>
             <InputGroup className="no-border">
               <Typeahead
