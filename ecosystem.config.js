@@ -1,9 +1,9 @@
 module.exports = {
     apps : [{
-      name: 'stocky',
+      name: 'server',  // Changed name to 'server' to match script filename
       script: 'server.js',
-      exec_mode: 'cluster',
-      instances: 'max',
+      exec_mode: 'fork',  // Changed to 'fork' for single instance
+      instances: 1,  // Set to 1 for single instance
       autorestart: true,
       watch: false,
       max_memory_restart: '2G',
