@@ -123,46 +123,9 @@
     }
 
     .nav-open{
-        .main-panel{
-            right: 0;
-            @include transform-translate-x(260px);
-        }
-
-        .sidebar{
-            @include transform-translate-x(0px);
-        }
-
         body{
             position: relative;
             overflow-x: hidden;
-        }
-
-        .menu-on-right{
-            .main-panel{
-                @include transform-translate-x(-260px);
-            }
-
-            .navbar-collapse,
-            .sidebar{
-                @include transform-translate-x(0px);
-            }
-
-            .navbar-translate{
-                @include transform-translate-x(-300px);
-            }
-
-            #bodyClick{
-                right: 260px;
-                left: auto;
-            }
-        }
-    }
-
-    .menu-on-right{
-        .sidebar{
-            left: auto;
-            right:0;
-            @include transform-translate-x(260px);
         }
     }
 
@@ -267,7 +230,7 @@
 
 
     .main-panel{
-      width: 30%;
+      width: 100%;
       // Default margin
     }
 
@@ -403,9 +366,9 @@
   }
 
   .main-panel .content {
-    padding-left: 100px;
-    padding-right: 100px;
-
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 125px;
   }
 
     .footer{

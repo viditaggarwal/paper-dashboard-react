@@ -12,6 +12,8 @@ import {
   DropdownMenu,
   DropdownItem,
   Container,
+  Row,
+  Col,
   InputGroup,
   InputGroupText,
   InputGroupAddon,
@@ -23,6 +25,8 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';  // Import the CSS
 
 function Header(props) {
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [isMobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
@@ -93,99 +97,184 @@ function Header(props) {
   };
 
   return (
-    // add or remove classes depending if we are on full-screen-maps page or not
-    <Navbar
-      color={
-        location.pathname.indexOf("full-screen-maps") !== -1 ? "dark" : color
-      }
-      expand="lg"
-      className={
-        location.pathname.indexOf("full-screen-maps") !== -1
-          ? "navbar-absolute fixed-top"
-          : "navbar-absolute fixed-top " +
-            (color === "transparent" ? "navbar-transparent " : "")
-      }
-    >
-      <Container fluid>
-        <div className="navbar-wrapper">
-          <div className="navbar-toggle">
-            <button
-              type="button"
-              ref={sidebarToggle}
-              className="navbar-toggler"
-              onClick={() => openSidebar()}
-            >
-              <span className="navbar-toggler-bar bar1" />
-              <span className="navbar-toggler-bar bar2" />
-              <span className="navbar-toggler-bar bar3" />
-            </button>
-          </div>
-          <NavbarBrand href="/">{getBrand()}</NavbarBrand>
-        </div>
-        <NavbarToggler onClick={toggle}>
-          <span className="navbar-toggler-bar navbar-kebab" />
-          <span className="navbar-toggler-bar navbar-kebab" />
-          <span className="navbar-toggler-bar navbar-kebab" />
-        </NavbarToggler>
-        <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          {/* <Nav navbar>
-            {props.routes.map((route, index) => (
-              <NavItem key={index}>
-                <Link to={route.path} className="nav-link">
-                  {route.name}
-                </Link>
-              </NavItem>
-            ))}
-          </Nav> */}
-          <form onSubmit={handleFormSubmit}>
-            <InputGroup className="no-border">
-              <Typeahead
-                id="stock-typeahead"
-                filterBy={['name', 'ticker']}  // Specify the properties to filter by
-                labelKey={(option) => `${option.name} (${option.ticker})`}  // Display both name and ticker in the options
-                onChange={handleTypeaheadSelection}
-                options={stocks}
-                placeholder="Search stocks..."
-                selected={selected}
-              />
-              <InputGroupAddon addonType="append">
-                <InputGroupText>
-                  <i className="nc-icon nc-zoom-split" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </form>
-          <Nav navbar>
-            <Dropdown
-              nav
-              isOpen={dropdownOpen}
-              toggle={(e) => dropdownToggle(e)}
-            >
-              <DropdownToggle caret nav>
-                <i className="nc-icon nc-bell-55" />
-                <p>
-                  <span className="d-lg-none d-md-block">Some Actions</span>
-                </p>
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem tag="a">Action</DropdownItem>
-                <DropdownItem tag="a">Another Action</DropdownItem>
-                <DropdownItem tag="a">Something else here</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            <NavItem>
-              <Link to="#pablo" className="nav-link btn-rotate">
-                <i className="nc-icon nc-settings-gear-65" />
-                <p>
-                  <span className="d-lg-none d-md-block">Account</span>
-                </p>
-              </Link>
-            </NavItem>
-          </Nav>
-        </Collapse>
-      </Container>
+    <Navbar className={"navbar-absolute fixed-top " + (color === "transparent" ? "navbar-transparent " : "")}>
+        <Container fluid>
+            {/* Desktop View */}
+            <div className="d-none d-lg-flex justify-content-between align-items-center w-100">
+                <NavbarBrand href="/">{getBrand()}</NavbarBrand>
+                <form onSubmit={handleFormSubmit} className="d-flex flex-grow-1 mx-3">
+                    <Typeahead
+                        id="stock-typeahead"
+                        filterBy={['name', 'ticker']}
+                        labelKey={(option) => `${option.name} (${option.ticker})`}
+                        onChange={handleTypeaheadSelection}
+                        options={stocks}
+                        placeholder="Search stocks..."
+                        selected={selected}
+                        className="flex-grow-1"
+                    />
+                    <InputGroupAddon addonType="append">
+                        <InputGroupText>
+                            <i className="nc-icon nc-zoom-split" />
+                        </InputGroupText>
+                    </InputGroupAddon>
+                </form>
+                <NavItem style={{ listStyleType: 'none' }}>
+                    <Link to="#pablo" className="nav-link btn-rotate">
+                    <i className="nc-icon nc-settings-gear-65" onClick={() => setDrawerOpen(!isDrawerOpen)} />
+
+                    {isDrawerOpen && (
+                        <div className="drawer">
+                            <Link to="/profile">Profile</Link>
+                            <Link to="/logout">Logout</Link>
+                        </div>
+                    )}
+                    </Link>
+                </NavItem>
+            </div>
+            
+            {/* Mobile View */}
+            <div className="d-flex d-lg-none justify-content-between align-items-center w-100">
+                <NavbarBrand className="text-center flex-grow-1" href="/">{getBrand()}</NavbarBrand>
+                <NavItem style={{ listStyleType: 'none' }}>
+                    <Link to="#pablo" className="nav-link btn-rotate">
+                        <i className="nc-icon nc-settings-gear-65" onClick={() => setMobileDrawerOpen(true)} />
+                    </Link>
+                </NavItem>
+            </div>
+            <div className="d-block d-lg-none w-100 mt-2">
+                <form onSubmit={handleFormSubmit}>
+                    <InputGroup>
+                        <Typeahead
+                            id="stock-typeahead-mobile"
+                            filterBy={['name', 'ticker']}
+                            labelKey={(option) => `${option.name} (${option.ticker})`}
+                            onChange={handleTypeaheadSelection}
+                            options={stocks}
+                            placeholder="Search stocks..."
+                            selected={selected}
+                        />
+                        <InputGroupAddon addonType="append">
+                            <InputGroupText>
+                                <i className="nc-icon nc-zoom-split" />
+                            </InputGroupText>
+                        </InputGroupAddon>
+                    </InputGroup>
+                </form>
+            </div>
+
+            {isMobileDrawerOpen && (
+                <div className="mobile-drawer">
+                    <button className="close-drawer" onClick={() => setMobileDrawerOpen(false)}>X</button>
+                    <div className="drawer-content">
+                        <Link to="/profile">Profile</Link>
+                        <Link to="/logout">Logout</Link>
+                    </div>
+                </div>
+            )}
+        </Container>
     </Navbar>
-  );
+);
+
+
+
+  // return (
+  //   <Navbar
+  //     color={
+  //       location.pathname.indexOf("full-screen-maps") !== -1 ? "dark" : color
+  //     }
+  //     expand="lg"
+  //     className={
+  //       location.pathname.indexOf("full-screen-maps") !== -1
+  //         ? "navbar-absolute fixed-top"
+  //         : "navbar-absolute fixed-top " +
+  //           (color === "transparent" ? "navbar-transparent " : "")
+  //     }
+  //   >
+  //     <Container fluid className="flex-column flex-lg-row justify-content-lg-between">
+  //       <div className="navbar-wrapper mx-auto text-center text-lg-left">
+  //         <NavbarBrand href="/">{getBrand()}</NavbarBrand>
+  //       </div>
+  //       <Nav navbar className="position-absolute top-0 end-0">
+  //         <NavItem>
+  //           <Link to="#pablo" className="nav-link btn-rotate">
+  //             <i className="nc-icon nc-settings-gear-65" />
+  //           </Link>
+  //         </NavItem>
+  //       </Nav>
+  //       <form className='full-width-input-group my-2 my-lg-0 mx-auto' onSubmit={handleFormSubmit}>
+  //         <InputGroup className="no-border">
+  //           <Typeahead
+  //             id="stock-typeahead"
+  //             filterBy={['name', 'ticker']}
+  //             labelKey={(option) => `${option.name} (${option.ticker})`}
+  //             onChange={handleTypeaheadSelection}
+  //             options={stocks}
+  //             placeholder="Search stocks..."
+  //             selected={selected}
+  //           />
+  //           <InputGroupAddon addonType="append">
+  //             <InputGroupText>
+  //               <i className="nc-icon nc-zoom-split" />
+  //             </InputGroupText>
+  //           </InputGroupAddon>
+  //         </InputGroup>
+  //       </form>
+  //     </Container>
+  //   </Navbar>
+  // );
+  
+  
+
+  // return (
+  //   // add or remove classes depending if we are on full-screen-maps page or not
+  //   <Navbar
+  //     color={
+  //       location.pathname.indexOf("full-screen-maps") !== -1 ? "dark" : color
+  //     }
+  //     expand="lg"
+  //     className={
+  //       location.pathname.indexOf("full-screen-maps") !== -1
+  //         ? "navbar-absolute fixed-top"
+  //         : "navbar-absolute fixed-top " +
+  //           (color === "transparent" ? "navbar-transparent " : "")
+  //     }
+  //   >
+  //   <Container fluid className="flex-column flex-lg-row">
+  //       <div className="navbar-wrapper">
+  //         <NavbarBrand href="/">{getBrand()}</NavbarBrand>
+  //       </div>
+  //       <form className='full-width-input-group my-2 my-lg-0' onSubmit={handleFormSubmit}>
+  //         <InputGroup className="no-border">
+  //           <Typeahead
+  //             id="stock-typeahead"
+  //             filterBy={['name', 'ticker']}  // Specify the properties to filter by
+  //             labelKey={(option) => `${option.name} (${option.ticker})`}  // Display both name and ticker in the options
+  //             onChange={handleTypeaheadSelection}
+  //             options={stocks}
+  //             placeholder="Search stocks..."
+  //             selected={selected}
+  //           />
+  //           <InputGroupAddon addonType="append">
+  //             <InputGroupText>
+  //               <i className="nc-icon nc-zoom-split" />
+  //             </InputGroupText>
+  //           </InputGroupAddon>
+  //         </InputGroup>
+  //       </form>
+  //       <Nav navbar className="ml-auto">
+  //         <NavItem>
+  //           <Link to="#pablo" className="nav-link btn-rotate">
+  //             <i className="nc-icon nc-settings-gear-65" />
+  //             <p>
+  //               <span className="d-lg-none d-md-block">Account</span>
+  //             </p>
+  //           </Link>
+  //         </NavItem>
+  //       </Nav>
+  //     </Container>
+  //   </Navbar>
+  // );
 }
 
 export default Header;
