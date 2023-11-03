@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Provider } from 'react-redux';  // Import the Provider component
 import { useDispatch, useSelector } from 'react-redux';
 import { validate } from './actions/stockActions';
-import store from './store';  // Import your Redux store
 
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -38,8 +36,5 @@ const App = () => {
   );
 };
 
-root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+root.render(<App />);
+
