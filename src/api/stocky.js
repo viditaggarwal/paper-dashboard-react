@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const HOSTNAME = 'http://35.82.209.215';
+const HOSTNAME = 'https://api.stockyapp.com';
 
 export const fetchStockDetails = async (ticker) => {
   try {
