@@ -29,3 +29,14 @@ export const fetchStockFundamentals = async (ticker) => {
     console.error('Error fetching stock details:', error);
   }
 };
+
+export const validateToken = async () => {
+  try {
+    const response = await axios.post(`${HOSTNAME}/validate-token`, {}, {
+      withCredentials: true
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error validating token:', error);
+  }
+};
