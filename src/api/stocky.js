@@ -1,10 +1,15 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const HOSTNAME = 'https://api.trystocky.com';
 
 export const fetchStockDetails = async (ticker) => {
   try {
     const response = await axios.get(`${HOSTNAME}/stock/details/${ticker}`);
+    const allCookies = Cookies.get();
+    Object.entries(allCookies).forEach(([key, value]) => {
+      console.log(`${key}: ${value}`);
+    });    
     return response.data;
   } catch (error) {
     console.error('Error fetching stock details:', error);

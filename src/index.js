@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from 'react-redux';  // Import the Provider component
-import { useDispatch, useSelector } from 'react-redux';
-import { validate } from './actions/stockActions';
 import store from './store';  // Import your Redux store
 
 
@@ -17,18 +15,6 @@ import AdminLayout from "layouts/Admin.js";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const App = () => {
-  const dispatch = useDispatch();
-  const tokenData = useSelector(state => state.data);
-
-  useEffect(() => {
-    dispatch(validate());
-    console.log('Token data from Redux state:', tokenData);
-  }, [dispatch]);
-
-  useEffect(() => {
-    console.log('Token data from Redux state:', tokenData);
-  }, [tokenData]);
-
   return (
     <BrowserRouter>
       <Routes>
