@@ -3,7 +3,7 @@ const { formatNumber } = require('../utils/numberUtils');  // Adjust the path as
 function getGradientColor(ctx, value) {
   const gradient = ctx.createLinearGradient(0, 0, 0, 150);
   const endColor = value >= 0 ? '#6bd098' : '#f17e5d';  // modern green for positive, modern red for negative
-  gradient.addColorStop(0, '#FFFFFF');
+  gradient.addColorStop(0, '#E1E1E1');
   gradient.addColorStop(1, endColor);
   return gradient;
 }
@@ -53,7 +53,7 @@ function prepareChartData(ratio) {
               display: false  // Hide grid lines for x-axis
             },
             ticks: {
-              color: 'white',
+              color: 'black',
             }
           },
           y: {
@@ -64,7 +64,7 @@ function prepareChartData(ratio) {
               callback: function(value, index, values) {
                 return formatNumber(value);
               },
-              color: 'white',
+              color: 'black',
             }
           }
         },

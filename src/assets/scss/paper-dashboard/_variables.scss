@@ -12,7 +12,8 @@ $none:                       0   !default;
 $border-thin:                1px !default;
 $border-thick:               2px !default;
 
-$white-color:                #FFFFFF !default;
+// $white-color:                #FFFFFF !default;
+$white-color:                #333333 !default;
 $white-bg:                   #FFFFFF !default;
 $orange-bg:                  #e95e38 !default;
 
@@ -50,9 +51,9 @@ $opacity-2:                  rgba(255,255,255, .2) !default;
 
 $transparent-bg:             transparent !default;
 // $dark-background:            #07091a !default;
-$dark-background:            #151B24 !default;
+$dark-background:            #E8E8E8  !default;
 
-$lt-dark-background:         #1B222D !default;
+$lt-dark-background:         #FFFFFF !default;
 
 $gray-input-bg:              #fffcf5 !default;
 $danger-input-bg:            #FFC0A4 !default;
@@ -131,7 +132,7 @@ $brand-danger:               $danger-color !default;
 $brand-inverse:              $black-color !default;
 
 $link-disabled-color:        #666666 !default;
-$dark-color:                 #212120 !default;
+$dark-color:                 #FFFFFF !default;
 //     light colors
 $light-blue:                 rgba($primary-color, .2);
 $light-azure:                rgba($info-color, .2);
