@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from 'react-redux';  // Import the Provider component
 import store from './store';  // Import your Redux store
-
+import 'remixicon/fonts/remixicon.css'
 
 import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/paper-dashboard.scss?v=1.3.0";

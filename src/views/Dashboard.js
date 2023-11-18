@@ -21,6 +21,28 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getStockDetails, getStockFundamentals } from '../actions/stockActions';
 import Loader from '../components/Loader';
 import { formatNumber } from '../utils/numberUtils';
+import Rating from 'react-rating';
+
+function getRatingValue(score) {
+  let ratingValue = score / 20;
+  return Math.ceil(ratingValue * 2) / 2;
+}
+
+function getRatingClass(score) {
+  const ratings = {
+    1: 'rating-1',
+    1.5: 'rating-1-5',
+    2: 'rating-2',
+    2.5: 'rating-2-5',
+    3: 'rating-3',
+    3.5: 'rating-3-5',
+    4: 'rating-4',
+    4.5: 'rating-4-5',
+    5: 'rating-5',
+  };
+  let ratingValue = getRatingValue(score);
+  return ratings[ratingValue] || 'rating-1';
+}
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -38,10 +60,22 @@ function Dashboard() {
     async function fetchData() {
       if (stockName) {
         setLoading(true);
-        await Promise.all([
-          dispatch(getStockDetails(stockName)),
-          dispatch(getStockFundamentals(stockName))
-        ]);
+        const timeoutPromise = new Promise((resolve, reject) => {
+          setTimeout(() => reject(new Error('Request timed out')), 3000);
+        });
+    
+        try {
+          await Promise.race([
+            Promise.all([
+              dispatch(getStockDetails(stockName)),
+              dispatch(getStockFundamentals(stockName))
+            ]),
+            timeoutPromise
+          ]);
+        } catch (error) {
+          console.error('An error occurred:', error);
+        }
+    
         setLoading(false);
       }
     }
@@ -141,16 +175,34 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Fair Value</p>
-                      <CardTitle tag="p">${parseFloat(fair_value['mean']).toFixed(1)}</CardTitle>
-                      <p />
+                      <CardTitle tag="p">
+                        ${parseFloat(fair_value['mean']).toFixed(1)}
+                      </CardTitle>
                     </div>
                   </Col>
                 </Row>
               </CardBody>
               <CardFooter>
                 <hr className="card-hr"/>
-                <div className="stats">
-                  <i className="far fa-clock" /> Updated 30 mins ago
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    {/* Link to the details section of the page */}
+                    <a href="#valuationSection" style={{ textDecoration: 'none' }}>
+                      Show Details
+                    </a>
+                  </div>
+                  <div style={{ fontSize: '14px' }}>
+                    {fair_value['mean'] > price ? (
+                        <span style={{color: 'green'}}>
+                          <i className="fas fa-arrow-up" />
+                        </span>
+                      ) : (
+                        <span style={{color: 'red'}}>
+                          <i className="fas fa-arrow-down" />
+                        </span>
+                      )}
+                    ({((fair_value['mean'] - price) / price * 100).toFixed(2)}%)
+                  </div>
                 </div>
               </CardFooter>
             </Card>
@@ -167,7 +219,14 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Financial Health</p>
-                      <CardTitle tag="p">{score}</CardTitle>
+                      {/* Convert score from 0-100 to 0-5 and then render Rating */}
+                      <Rating
+                        emptySymbol="far fa-star"
+                        fullSymbol={`fas fa-star ${getRatingClass(score)}`}
+                        fractions={2}
+                        initialRating={getRatingValue(score)}
+                        readonly
+                      />
                       <p />
                     </div>
                   </Col>
@@ -185,7 +244,7 @@ function Dashboard() {
         <Row>
           <Col md="12">
             <Row className='padded-row'>
-              <CardTitle tag="h4">Valuation</CardTitle>
+              <CardTitle id="valuationSection" tag="h4">Valuation</CardTitle>
             </Row>
             <hr className="card-hr"/>
             <Row>
@@ -251,44 +310,137 @@ function Dashboard() {
             </Row>
           </Col>  
         </Row>
-        <div>
-          <Row className='padded-row'>
-            <CardTitle tag="h4">Financials</CardTitle>
-          </Row>
-          <hr className="card-hr"/>
-          {sections.map((section, index) => (
-            <Row key={index}>
-              <Col md="12">
-                <Row className='padded-row'>
-                  <CardSubtitle className='subtitle-h5'>{section.title}</CardSubtitle>
-                </Row>
-                <hr className="card-hr-left-short"/>
-                <Row>
-                  {Object.keys(section.label_keys).map((key, i) => {
-                    const preparedData = prepareChartData(graph_data[section.category][key]);
-                    return (
-                      <Col md="4" key={i}>
-                        <Card className="card-chart">
-                          <CardHeader>
-                            <CardTitle tag="h5">{section.label_keys[key]}</CardTitle>
-                          </CardHeader>
-                          <CardBody>
-                            <Bar
-                              data={preparedData.data}
-                              options={preparedData.options}
-                              width={400}
-                              height={200}
-                            />
-                          </CardBody>
-                        </Card>
-                      </Col>
-                    );
-                  })}
-                </Row>
-              </Col>
+        <Row>
+          <Col md="12">
+            <Row className='padded-row'>
+              <CardTitle id="healthSection" tag="h4">Financial Health</CardTitle>
             </Row>
-          ))}
+            <hr className="card-hr"/>
+            <Row>
+              {['growth', 'profitability', 'leadership', 'solvency'].map((method, index) => {
+                if (!fair_value[method]) {
+                  return null;
+                }
+                
+                const fairVal = fair_value[method]['Fair Value'];
+                const percentageDifference = ((fairVal - price) / price) * 100;
+                const color = percentageDifference >= 0 ? 'green' : 'red';
+
+                return (
+                  <Col md="4" key={index}>
+                    <Card>
+                      <CardBody>
+                        <Row>
+                          <Col md="8" xs="7">
+                            <CardTitle tag="h5">{method.toUpperCase()} Valuation</CardTitle>
+                            <CardSubtitle>
+                              {(() => {
+                                const fullForms = {
+                                  'dcf': 'Discounted Cash Flow',
+                                  'pe': 'Price to Earnings',
+                                  'pb': 'Price to Book',
+                                  'ps': 'Price to Sales',
+                                  'ev_ebit': 'Enterprise Value to EBIT'
+                                };
+                                return fullForms[method] || '';
+                              })()}
+                            </CardSubtitle>
+                          </Col>
+                        </Row>
+                        <hr className="card-hr"/>
+                        <Row>
+                        <CardText className='padded-row valuation-description'>
+                          <b>{ticker}</b> is currently priced at <b>${price.toFixed(2)}</b>. 
+                          Based on the {method.toUpperCase()} method, the stock has a fair value of <b><span style={{"color": color}}>${fairVal.toFixed(2)}</span></b>.
+                          This represents a <span style={{"color": color}}>{percentageDifference.toFixed(2)}% {percentageDifference >= 0 ? 'upside' : 'downside'}</span> potential.
+                        </CardText>
+                        </Row>
+                        <Row className="padded-row equidistant-divs">
+                            {Object.keys(fair_value[method]).map((field, fieldIndex) => {
+                              const value = fair_value[method][field];
+                              if (typeof value === 'number' && field !== 'Fair Value') {
+                                const displayValue = formatNumber(value);
+                                return (
+                                  <div className="numbers">
+                                    <CardText className='info-text' key={fieldIndex}>
+                                      {field.replace(/_/g, ' ')}: {displayValue}
+                                    </CardText>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            })}
+                        </Row>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+          </Col>  
+        </Row>
+        <div>
+          {sections.some(section => 
+            Object.keys(section.label_keys).some(key => 
+              graph_data[section.category] && graph_data[section.category][key]
+            )
+          ) && (
+            <>
+              <Row className='padded-row'>
+                <CardTitle tag="h4">Financials</CardTitle>
+              </Row>
+              <hr className="card-hr"/>
+            </>
+          )}
+
+          {sections.map((section, index) => {
+            const hasValidData = Object.keys(section.label_keys).some(key => 
+              graph_data[section.category] && graph_data[section.category][key]
+            );
+
+            if (!hasValidData) {
+              return null;
+            }
+
+            return (
+              <Row key={index}>
+                <Col md="12">
+                  <Row className='padded-row'>
+                    <CardSubtitle className='subtitle-h5'>{section.title}</CardSubtitle>
+                  </Row>
+                  <hr className="card-hr-left-short"/>
+                  <Row>
+                    {Object.keys(section.label_keys).map((key, i) => {
+                      if (graph_data[section.category] && graph_data[section.category][key]) {
+                        const preparedData = prepareChartData(graph_data[section.category][key]);
+                        return (
+                          <Col md="4" key={i}>
+                            <Card className="card-chart">
+                              <CardHeader>
+                                <CardTitle tag="h5">{section.label_keys[key]}</CardTitle>
+                              </CardHeader>
+                              <CardBody>
+                                <Bar
+                                  data={preparedData.data}
+                                  options={preparedData.options}
+                                  width={400}
+                                  height={200}
+                                />
+                              </CardBody>
+                            </Card>
+                          </Col>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                  </Row>
+                </Col>
+              </Row>
+            );
+          })}
         </div>
+
         </>
       )}
       </div>

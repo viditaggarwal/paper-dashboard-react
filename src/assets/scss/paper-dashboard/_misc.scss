@@ -309,3 +309,41 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
       }
   }
 }
+
+
+.rating-1 {
+  color: red;
+}
+
+/* Assuming a linear gradient from red to green */
+.rating-1-5 {
+  color: #ff6666;
+}
+
+.rating-2 {
+  color: #ff9933;
+}
+
+.rating-2-5 {
+  color: #ffcc66;
+}
+
+.rating-3 {
+  color: #99cc66;
+}
+
+.rating-3-5 {
+  color: #66cc66;
+}
+
+.rating-4 {
+  color: #33cc33;
+}
+
+.rating-4-5 {
+  color: #009900;
+}
+
+.rating-5 {
+  color: darkgreen;
+}
