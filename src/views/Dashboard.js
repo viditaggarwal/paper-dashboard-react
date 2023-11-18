@@ -234,8 +234,13 @@ function Dashboard() {
               </CardBody>
               <CardFooter>
                 <hr className="card-hr"/>
-                <div className="stats">
-                  <i className="far fa-clock" /> In the last hour
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    {/* Link to the details section of the page */}
+                    <a href="#healthSection" style={{ textDecoration: 'none' }}>
+                      Show Details
+                    </a>
+                  </div>
                 </div>
               </CardFooter>
             </Card>
