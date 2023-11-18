@@ -1,4 +1,4 @@
-import { fetchStockDetails, fetchStockFundamentals, fetchStockSecSummary, validateToken } from '../api/stocky';
+import { fetchStockDetails, fetchStockFundamentals, fetchStockSecSummary, validateToken, getAllStocks } from '../api/stocky';
 
 export const getStockDetails = (ticker) => async (dispatch) => {
   const data = await fetchStockDetails(ticker);
@@ -26,3 +26,8 @@ export const validate = () => async (dispatch) => {
   const data = await validateToken();
   dispatch({ type: 'VALIDATE_TOKEN', payload: data });
 }
+
+export const fetchAllStocks = () => async (dispatch) => {
+  const data = await getAllStocks();
+  dispatch({ type: 'SET_ALL_STOCKS', payload: data });
+};

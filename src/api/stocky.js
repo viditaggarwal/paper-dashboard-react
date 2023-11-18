@@ -45,3 +45,12 @@ export const validateToken = async () => {
     console.error('Error validating token:', error);
   }
 };
+
+export const getAllStocks = async () => {
+  try {
+    const response = await axios.get(`${HOSTNAME}/stock/all`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all stocks:', error);
+  }
+}

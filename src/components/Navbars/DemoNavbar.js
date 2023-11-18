@@ -1,26 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import {
-  Collapse,
   Navbar,
-  NavbarToggler,
   NavbarBrand,
-  Nav,
   NavItem,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Container,
-  Row,
-  Col,
   InputGroup,
   InputGroupText,
   InputGroupAddon,
 } from "reactstrap";
-import { useDispatch } from 'react-redux';
-import { updateStockName } from '../../actions/stockActions';
-import { stocks } from '../../data/stocks';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateStockName, fetchAllStocks } from '../../actions/stockActions';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';  // Import the CSS
 
@@ -79,7 +69,15 @@ function Header(props) {
     }
   }, [location]);
 
+  
+
   const dispatch = useDispatch();
+
+  const stocks = useSelector(state => state.stocks.stocks);
+
+  React.useEffect(() => {
+    dispatch(fetchAllStocks());
+  }, [dispatch]);
 
   const handleTypeaheadSelection = (selected) => {
     setSelected(selected);
@@ -99,14 +97,16 @@ function Header(props) {
   return (
     <Navbar className={"navbar-absolute fixed-top " + (color === "transparent" ? "navbar-transparent " : "")}>
         <Container fluid>
-            {/* Desktop View */}
+            {/* Desktop View */
+              console.log("stocks***************", stocks)
+            }
             <div className="d-none d-lg-flex justify-content-between align-items-center w-100">
                 <NavbarBrand href="/">{getBrand()}</NavbarBrand>
                 <form onSubmit={handleFormSubmit} className="d-flex flex-grow-1 mx-3">
                     <Typeahead
                         id="stock-typeahead"
                         filterBy={['name', 'ticker']}
-                        labelKey={(option) => `${option.name} (${option.ticker})`}
+                        labelKey={(option) => `${option.ticker} (${option.name})`}
                         onChange={handleTypeaheadSelection}
                         options={stocks}
                         placeholder="Search stocks..."
