@@ -1,4 +1,4 @@
-import { fetchStockDetails, fetchStockFundamentals, fetchStockSecSummary, validateToken, getAllStocks } from '../api/stocky';
+import { fetchStockDetails, fetchStockFundamentals, fetchStockSecSummary, validateToken, getAllStocks, getUndervaluedStocks, getStocksByScore } from '../api/stocky';
 
 export const getStockDetails = (ticker) => async (dispatch) => {
   const data = await fetchStockDetails(ticker);
@@ -31,3 +31,14 @@ export const fetchAllStocks = () => async (dispatch) => {
   const data = await getAllStocks();
   dispatch({ type: 'SET_ALL_STOCKS', payload: data });
 };
+
+export const fetchUnderValuedStocks = () => async (dispatch) => {
+  const data = await getUndervaluedStocks();
+  dispatch({ type: 'SET_UNDERVALUED_STOCKS', payload: data });
+}
+
+export const fetchStocksByScore = () => async (dispatch) => {
+  const data = await getStocksByScore();
+  dispatch({ type: 'SET_HIGH_SCORE_STOCKS', payload: data });
+}
+

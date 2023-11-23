@@ -19,6 +19,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AdminLayout />} />
+        <Route path="/*" element={<AdminLayout />} />
       </Routes>
     </BrowserRouter>
   );

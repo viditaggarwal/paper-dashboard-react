@@ -1,11 +1,11 @@
 import Dashboard from "views/Dashboard.js";
-import SecSummary from "views/SecSummary.js";
+import Homepage from "views/Homepage.js";
 import store from './store';
 import { Provider } from 'react-redux';
 
 var routes = [
   {
-    path: "/",
+    path: "/:stockName",
     name: "Details",
     icon: "nc-icon nc-bank",
     component: (
@@ -16,15 +16,15 @@ var routes = [
     layout: "/",
   },
   {
-    path: "/secsummary",
-    name: "10K AI Summary",
-    icon: "nc-icon nc-glasses-2",
+    path: "/",
+    name: "Home",
+    icon: "nc-icon nc-bank",
     component: (
       <Provider store={store}>
-        <SecSummary />
+        <Homepage />
       </Provider>
     ),
     layout: "/",
-  }
+  },
 ];
 export default routes;

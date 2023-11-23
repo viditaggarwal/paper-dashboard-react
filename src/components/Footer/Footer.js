@@ -30,18 +30,18 @@ function Footer(props) {
           <nav className="footer-nav">
             <ul>
               <li>
-                <a href="https://www.creative-tim.com" target="_blank">
-                  Creative Tim
+                <a href="https://trystocky.com" target="_blank">
+                  Stocky
                 </a>
               </li>
               <li>
-                <a href="https://blog.creative-tim.com" target="_blank">
+                <a href="https://stocky1119.substack.com/" target="_blank">
                   Blog
                 </a>
               </li>
               <li>
-                <a href="https://www.creative-tim.com/license" target="_blank">
-                  Licenses
+                <a href="https://www.trystocky.com/policy" target="_blank">
+                  Privacy Policy
                 </a>
               </li>
             </ul>
@@ -49,7 +49,7 @@ function Footer(props) {
           <div className="credits ml-auto">
             <div className="copyright">
               &copy; {1900 + new Date().getYear()}, made with{" "}
-              <i className="fa fa-heart heart" /> by Creative Tim
+              <i className="fa fa-heart heart" /> by Stocky
             </div>
           </div>
         </Row>

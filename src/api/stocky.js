@@ -54,3 +54,21 @@ export const getAllStocks = async () => {
     console.error('Error fetching all stocks:', error);
   }
 }
+
+export const getUndervaluedStocks = async () => {
+  try {
+    const response = await axios.get(`${HOSTNAME}/stock/finder?criteria=undervalued&limit=6`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching undervalued stocks:', error);
+  }
+}
+
+export const getStocksByScore = async () => {
+  try {
+    const response = await axios.get(`${HOSTNAME}/stock/finder?criteria=score&limit=6`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching undervalued stocks:', error);
+  }
+}

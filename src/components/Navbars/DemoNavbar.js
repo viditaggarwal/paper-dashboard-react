@@ -13,11 +13,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateStockName, fetchAllStocks } from '../../actions/stockActions';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';  // Import the CSS
+import { useNavigate } from 'react-router-dom';
+import SearchBar from './SearchBar';
+
 
 function Header(props) {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [isMobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [selected, setSelected] = useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
@@ -35,14 +37,11 @@ function Header(props) {
     setDropdownOpen(!dropdownOpen);
   };
   const getBrand = () => {
-    // let brandName = "Stocky";
-    // routes.map((prop, key) => {
-    //   if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
-    //     brandName = "Stocky";
-    //   }
-    //   return null;
-    // });
-    return "Stocky";
+    return (
+      <div style={{width: '100px'}}>
+          <img alt="..." src={require("../../assets/img/logo-name-bg.png")} />
+      </div>
+    );
   };
   const openSidebar = () => {
     document.documentElement.classList.toggle("nav-open");
@@ -71,58 +70,18 @@ function Header(props) {
 
   
 
-  const dispatch = useDispatch();
-
-  const stocks = useSelector(state => state.stocks.stocks);
-
-  React.useEffect(() => {
-    dispatch(fetchAllStocks());
-  }, [dispatch]);
-
-  const handleTypeaheadSelection = (selected) => {
-    setSelected(selected);
-    if (selected.length > 0) {
-      dispatch(updateStockName(selected[0].ticker));  // Dispatch the action to update the stock name
-    }
-  };
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    setSelected(selected);
-    if (selected.length > 0) {
-      dispatch(updateStockName(selected[0].ticker));  // Dispatch the action to update the stock name
-    }
-  };
 
   return (
     <Navbar className={"navbar-absolute fixed-top " + (color === "transparent" ? "navbar-transparent " : "")}>
         <Container fluid>
             {/* Desktop View */
-              console.log("stocks***************", stocks)
             }
             <div className="d-none d-lg-flex justify-content-between align-items-center w-100">
                 <NavbarBrand href="/">{getBrand()}</NavbarBrand>
-                <form onSubmit={handleFormSubmit} className="d-flex flex-grow-1 mx-3">
-                    <Typeahead
-                        id="stock-typeahead"
-                        filterBy={['name', 'ticker']}
-                        labelKey={(option) => `${option.ticker} (${option.name})`}
-                        onChange={handleTypeaheadSelection}
-                        options={stocks}
-                        placeholder="Search stocks..."
-                        selected={selected}
-                        className="flex-grow-1"
-                    />
-                    <InputGroupAddon addonType="append">
-                        <InputGroupText>
-                            <i className="nc-icon nc-zoom-split" />
-                        </InputGroupText>
-                    </InputGroupAddon>
-                </form>
+                {location.pathname !== "/" && (<SearchBar />)}
                 <NavItem style={{ listStyleType: 'none' }}>
                     <Link to="#pablo" className="nav-link btn-rotate">
                     <i className="nc-icon nc-settings-gear-65" onClick={() => setDrawerOpen(!isDrawerOpen)} />
-
                     {isDrawerOpen && (
                         <div className="drawer">
                             <Link to="/profile">Profile</Link>
@@ -143,24 +102,7 @@ function Header(props) {
                 </NavItem>
             </div>
             <div className="d-block d-lg-none w-100 mt-2">
-                <form onSubmit={handleFormSubmit}>
-                    <InputGroup>
-                        <Typeahead
-                            id="stock-typeahead-mobile"
-                            filterBy={['name', 'ticker']}
-                            labelKey={(option) => `${option.name} (${option.ticker})`}
-                            onChange={handleTypeaheadSelection}
-                            options={stocks}
-                            placeholder="Search stocks..."
-                            selected={selected}
-                        />
-                        <InputGroupAddon addonType="append">
-                            <InputGroupText>
-                                <i className="nc-icon nc-zoom-split" />
-                            </InputGroupText>
-                        </InputGroupAddon>
-                    </InputGroup>
-                </form>
+                <SearchBar />
             </div>
 
             {isMobileDrawerOpen && (

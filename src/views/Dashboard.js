@@ -22,27 +22,9 @@ import { getStockDetails, getStockFundamentals } from '../actions/stockActions';
 import Loader from '../components/Loader';
 import { formatNumber } from '../utils/numberUtils';
 import Rating from 'react-rating';
-
-function getRatingValue(score) {
-  let ratingValue = score / 20;
-  return Math.ceil(ratingValue * 2) / 2;
-}
-
-function getRatingClass(score) {
-  const ratings = {
-    1: 'rating-1',
-    1.5: 'rating-1-5',
-    2: 'rating-2',
-    2.5: 'rating-2-5',
-    3: 'rating-3',
-    3.5: 'rating-3-5',
-    4: 'rating-4',
-    4.5: 'rating-4-5',
-    5: 'rating-5',
-  };
-  let ratingValue = getRatingValue(score);
-  return ratings[ratingValue] || 'rating-1';
-}
+import { useParams } from 'react-router-dom';
+import { getRatingValue, getRatingClass } from '../utils/utils';
+import ImageOrStockCircle from 'components/Image/ImageOrStockCircle';
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -55,7 +37,9 @@ function Dashboard() {
     { title: 'Balance Sheet', category: 'balance_sheet', label_keys: {roe:'ROE', debt_to_equity: 'DE Ratio', current_ratio:'Current Ratio'} },
     { title: 'Cash Flow Statement', category: 'cash_flow', label_keys: {operating_cash_flow:'Operating Cash Flow', fcf:'Free Cash Flow', capex: 'Capex'} },
   ];
-  const stockName = useSelector(state => state.stockName);
+  // const stockName = useSelector(state => state.stockName);
+  const { stockName } = useParams();
+
   useEffect(() => {
     async function fetchData() {
       if (stockName) {
@@ -117,7 +101,8 @@ function Dashboard() {
               <CardHeader>
                 <Row>
                   <Col md="2" className="centered-content">
-                    <img src={logo} alt={`${name} Logo`} style={{ width: '100%', maxWidth: '100px' }} />
+                    {/* <img src={logo} alt={`${name} Logo`} style={{ width: '100%', maxWidth: '100px' }} /> */}
+                    <ImageOrStockCircle ticker={ticker} logoUrl={logo} className='card-banner-logo'/>
                     <CardTitle tag="p">NASDAQ: {ticker}</CardTitle>
                   </Col>
                   <Col md="10">

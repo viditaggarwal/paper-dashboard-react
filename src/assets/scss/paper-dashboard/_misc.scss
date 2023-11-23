@@ -347,3 +347,137 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 .rating-5 {
   color: darkgreen;
 }
+
+.homepage-content {
+  .banner {
+      color: $light-black;
+      text-align: center;
+      // padding: 100px 0;
+
+      h1 {
+          font-size: 3rem; // Adjust font size as needed
+          margin-bottom: 0.5rem;
+      }
+
+      .tagline {
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+      }
+
+      .search-bar-container {
+          margin-bottom: 2.5rem;
+      }
+      .search-bar-badges {
+        margin: 1rem 5rem;
+        display: flex; // Use flexbox to align children
+        justify-content: center; // Horizontally center the badges
+        align-items: center;
+        flex-wrap: wrap; // Allow badges to wrap to next line
+
+        .badge {
+          margin-right: 0.5rem;
+          margin-bottom: 0.5rem;
+          font-size: 14px;
+          background-color: white;
+          color: $white-color;
+          font-weight: 500;
+          border: 1px solid $info-color;
+          &:hover {
+            text-decoration: underline; // Underline on hover
+          }
+          .badge-image {
+            width: 20px; // Set your desired image width
+            height: 20px; // Set your desired image height
+            margin-right: 0.5rem; // Add some space between the image and the text
+            object-fit: contain; // Keep the aspect ratio of the image
+          }
+        }
+      }
+  }
+  
+  .card-section {
+      // Styling for your card section
+  }
+
+  // .card-stock-logo {
+  //     width: 50px;
+  //     height: 80px;
+  // }
+
+  // .card-stock-name {
+  //     font-size: 1.2rem;
+  //     font-weight: 500;
+  // }
+
+  // .card-stock-price {
+  //     font-size: 1rem;
+  //     font-weight: 500;
+  // } 
+
+  .card-stock-logo {
+      width: 30px;
+      margin-top: -1rem;
+
+      img {
+          max-width: 100%; // Ensure the image is responsive
+          height: auto; // Maintain aspect ratio
+      }
+  }
+
+  .card-stock-name {
+      font-size: 1rem;
+      font-weight: 500;
+      white-space: nowrap; // Prevents text wrapping
+      overflow: hidden; // Hide overflow
+      text-overflow: ellipsis; // Add ellipsis
+      text-align: right; // Center the text
+      margin-top: 1rem;
+  }
+
+  .card-stock-ticker {
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: right; // Center the text
+    // margin-top: -1rem;
+  }
+
+  .card-stock-price {
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: right; // Center the text
+  }
+
+  .card-stock-price-positive {
+    color: green;
+  }
+  
+  .card-stock-price-negative {
+    color: red;
+  }
+
+  .card-stock-rating {
+      text-align: right; // Center the text
+  }
+
+
+  .card-stats {
+      // Additional styling for card
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); // Add shadow for depth
+      transition: 0.3s; // Smooth transition for hover effects
+      &:hover {
+          box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); // Increase shadow on hover
+      }
+  }
+
+  
+}
+
+.card-banner-logo {
+  width: 100px;
+  margin-top: -1rem;
+
+  img {
+      max-width: 100%; // Ensure the image is responsive
+      height: auto; // Maintain aspect ratio
+  }
+}
