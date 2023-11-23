@@ -94,24 +94,24 @@ const Homepage = () => {
                     <hr className="card-hr"/>
                     <Row>
                       {undervaluedStocks.map((stock, index) => (
-                        <Col key={index} md="2" xs="6">
+                        <Col key={index} md="2">
                           <a href={`/${stock.ticker}`} className="card-link">
                             <Card className="card-stats">
                               <CardBody>
                                 <Row>
-                                  <Col md="4" xs="4">
+                                  <Col md="4" xs="5">
                                     <div className="icon-big text-center icon-warning card-stock-logo">
                                       <ImageOrStockCircle ticker={stock.ticker} logoUrl={stock.logo} imageClassName="card-stock-logo"/>
                                     </div>
                                   </Col>
-                                  <Col md="8" xs="8">
+                                  <Col md="8" xs="5">
                                     <div className='card-stock-ticker'>
                                       <p>{stock.ticker}</p>
                                     </div>
                                   </Col>
                                 </Row>
                                 <Row>
-                                  <Col md="12" xs="12">
+                                  <Col md="12" xs="5">
                                     <div className='card-stock-name'>
                                       {stock.stock_name}
                                     </div>
@@ -119,7 +119,7 @@ const Homepage = () => {
                                 </Row>
                                 <hr className="card-hr"/>
                                 <Row>
-                                  <Col md="12" xs="12">
+                                  <Col md="12" xs="5">
                                     <div className={`card-stock-price ${stock.diff_percent >= 0 ? 'card-stock-price-positive' : 'card-stock-price-negative'}`}>
                                       <p>{`${stock.diff_percent ? stock.diff_percent : 'N/A'}`}%</p> 
                                     </div>
@@ -137,29 +137,29 @@ const Homepage = () => {
                 {stocksByScore && stocksByScore.length > 0 ? (
                   <div className="homepage-module">
                     <Row className='padded-row'>
-                      <CardTitle id="valuationSection" tag="h4">Most Healthy Stocks</CardTitle>
+                      <CardTitle id="valuationSection" tag="h4">Highly Financially Stable Stocks</CardTitle>
                     </Row>
                     <hr className="card-hr"/>
                     <Row>
                       {stocksByScore.map((stock, index) => (
-                        <Col key={index} md="2" xs="6">
+                        <Col key={index} md="2">
                           <a href={`/${stock.ticker}`} className="card-link">
                             <Card className="card-stats">
                               <CardBody>
                                 <Row>
-                                  <Col md="4" xs="4">
+                                  <Col md="4" xs="5">
                                     <div className="icon-big text-center icon-warning card-stock-logo">
                                       <ImageOrStockCircle ticker={stock.ticker} logoUrl={stock.logo} imageClassName="card-stock-logo"/>
                                     </div>
                                   </Col>
-                                  <Col md="8" xs="8">
+                                  <Col md="8" xs="5">
                                     <div className='card-stock-ticker'>
                                       <p>{stock.ticker}</p>
                                     </div>
                                   </Col>
                                 </Row>
                                 <Row>
-                                  <Col md="12" xs="12">
+                                  <Col md="12" xs="5">
                                     <div className='card-stock-name'>
                                       {stock.stock_name}
                                     </div>
@@ -167,7 +167,7 @@ const Homepage = () => {
                                 </Row>
                                 <hr className="card-hr"/>
                                 <Row className='card-stock-rating'>
-                                  <Col md="12">
+                                  <Col md="12" xs="5">
                                     <Rating
                                       emptySymbol="far fa-star"
                                       fullSymbol={`fas fa-star ${getRatingClass(stock.score)}`}
