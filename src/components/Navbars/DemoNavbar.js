@@ -102,7 +102,7 @@ function Header(props) {
                 </NavItem>
             </div>
             <div className="d-block d-lg-none w-100 mt-2">
-                <SearchBar />
+              {location.pathname !== "/" && (<SearchBar />)}
             </div>
 
             {isMobileDrawerOpen && (
@@ -116,107 +116,7 @@ function Header(props) {
             )}
         </Container>
     </Navbar>
-);
-
-
-
-  // return (
-  //   <Navbar
-  //     color={
-  //       location.pathname.indexOf("full-screen-maps") !== -1 ? "dark" : color
-  //     }
-  //     expand="lg"
-  //     className={
-  //       location.pathname.indexOf("full-screen-maps") !== -1
-  //         ? "navbar-absolute fixed-top"
-  //         : "navbar-absolute fixed-top " +
-  //           (color === "transparent" ? "navbar-transparent " : "")
-  //     }
-  //   >
-  //     <Container fluid className="flex-column flex-lg-row justify-content-lg-between">
-  //       <div className="navbar-wrapper mx-auto text-center text-lg-left">
-  //         <NavbarBrand href="/">{getBrand()}</NavbarBrand>
-  //       </div>
-  //       <Nav navbar className="position-absolute top-0 end-0">
-  //         <NavItem>
-  //           <Link to="#pablo" className="nav-link btn-rotate">
-  //             <i className="nc-icon nc-settings-gear-65" />
-  //           </Link>
-  //         </NavItem>
-  //       </Nav>
-  //       <form className='full-width-input-group my-2 my-lg-0 mx-auto' onSubmit={handleFormSubmit}>
-  //         <InputGroup className="no-border">
-  //           <Typeahead
-  //             id="stock-typeahead"
-  //             filterBy={['name', 'ticker']}
-  //             labelKey={(option) => `${option.name} (${option.ticker})`}
-  //             onChange={handleTypeaheadSelection}
-  //             options={stocks}
-  //             placeholder="Search stocks..."
-  //             selected={selected}
-  //           />
-  //           <InputGroupAddon addonType="append">
-  //             <InputGroupText>
-  //               <i className="nc-icon nc-zoom-split" />
-  //             </InputGroupText>
-  //           </InputGroupAddon>
-  //         </InputGroup>
-  //       </form>
-  //     </Container>
-  //   </Navbar>
-  // );
-  
-  
-
-  // return (
-  //   // add or remove classes depending if we are on full-screen-maps page or not
-  //   <Navbar
-  //     color={
-  //       location.pathname.indexOf("full-screen-maps") !== -1 ? "dark" : color
-  //     }
-  //     expand="lg"
-  //     className={
-  //       location.pathname.indexOf("full-screen-maps") !== -1
-  //         ? "navbar-absolute fixed-top"
-  //         : "navbar-absolute fixed-top " +
-  //           (color === "transparent" ? "navbar-transparent " : "")
-  //     }
-  //   >
-  //   <Container fluid className="flex-column flex-lg-row">
-  //       <div className="navbar-wrapper">
-  //         <NavbarBrand href="/">{getBrand()}</NavbarBrand>
-  //       </div>
-  //       <form className='full-width-input-group my-2 my-lg-0' onSubmit={handleFormSubmit}>
-  //         <InputGroup className="no-border">
-  //           <Typeahead
-  //             id="stock-typeahead"
-  //             filterBy={['name', 'ticker']}  // Specify the properties to filter by
-  //             labelKey={(option) => `${option.name} (${option.ticker})`}  // Display both name and ticker in the options
-  //             onChange={handleTypeaheadSelection}
-  //             options={stocks}
-  //             placeholder="Search stocks..."
-  //             selected={selected}
-  //           />
-  //           <InputGroupAddon addonType="append">
-  //             <InputGroupText>
-  //               <i className="nc-icon nc-zoom-split" />
-  //             </InputGroupText>
-  //           </InputGroupAddon>
-  //         </InputGroup>
-  //       </form>
-  //       <Nav navbar className="ml-auto">
-  //         <NavItem>
-  //           <Link to="#pablo" className="nav-link btn-rotate">
-  //             <i className="nc-icon nc-settings-gear-65" />
-  //             <p>
-  //               <span className="d-lg-none d-md-block">Account</span>
-  //             </p>
-  //           </Link>
-  //         </NavItem>
-  //       </Nav>
-  //     </Container>
-  //   </Navbar>
-  // );
+  );
 }
 
 export default Header;

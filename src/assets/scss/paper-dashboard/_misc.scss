@@ -366,6 +366,9 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 
       .search-bar-container {
           margin-bottom: 2.5rem;
+          @media screen and (max-width: 768px) {
+            margin-bottom: 0rem;
+          }
       }
       .search-bar-badges {
         margin: 1rem 5rem;
@@ -390,7 +393,18 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
             height: 20px; // Set your desired image height
             margin-right: 0.5rem; // Add some space between the image and the text
             object-fit: contain; // Keep the aspect ratio of the image
+            @media screen and (max-width: 768px) {
+              width: 15px;
+              height: 15px;
+            }
           }
+          @media screen and (max-width: 768px) {
+            font-size: 12px;
+          }
+        }
+
+        @media screen and (max-width: 768px) {
+          margin: 0.5rem 0.5rem;
         }
       }
   }
